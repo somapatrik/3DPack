@@ -49,42 +49,46 @@ namespace _3DPack.Models
             if (package.Height > OriginalHeight)
                 return packageStored;
 
-            // Try to place package alongside y-axis
             bool CanPlace = false;
-
             Point PlacementPoint = new Point();
 
-            foreach (Point point in StartingPoints) 
+            foreach (Point point in StartingPoints)
             {
-                bool IsCollindingBlockedArea = false;
-                bool IsInside = false;
                 PlacementPoint = new Point(point.X, point.Y);
+                CanPlace = CanPlacePackage(package, PlacementPoint);
 
-                IsInside = IsInsideFloor(package,PlacementPoint);
-                IsCollindingBlockedArea = IsCollisionWithBlockedArea(package, PlacementPoint);
-
-                CanPlace = IsInside && !IsCollindingBlockedArea;
-                
                 if (CanPlace)
                     break;                   
             }
 
-            // Placement
             if (CanPlace)
             {
-                AddBlockedArea(package, PlacementPoint);
-                AddPackage(package);
-                RemoveStartingPoint(PlacementPoint);
-                SortStartingPoints();
+                PlacePackage(package,PlacementPoint);
                 packageStored = true;
             }
 
             return packageStored;
         }
 
+        private void PlacePackage(Package package, Point PlacementPoint)
+        {
+            AddBlockedArea(package, PlacementPoint);
+            AddPackage(package);
+            RemoveStartingPoint(PlacementPoint);
+            SortStartingPoints();
+        }
+
+        private bool CanPlacePackage(Package package, Point point)
+        {
+            bool IsInside = IsInsideFloor(package, point);
+            bool IsCollidingBlockedArea = IsCollisionWithBlockedArea(package, point);
+
+            return IsInside && !IsCollidingBlockedArea;
+        }
+
         private void SortStartingPoints()
         {
-            StartingPoints = StartingPoints.OrderBy(p=>p.Y).ThenByDescending(p=>p.X).ToList();
+            StartingPoints = StartingPoints.OrderBy(p=>p.Y).ThenBy(p=>p.X).ToList();
         }
 
         private void RemoveStartingPoint(Point point)
@@ -103,6 +107,8 @@ namespace _3DPack.Models
             BlockedAreas.Add(blocked);
 
             // Starting points should be NEXT to a blocked area
+            // NOT USED DUE TO THE RECTANGLE CLASS FUNCTIONS
+
             Point topRight = blocked.TopRight;
             // topRight.X += 1;
 

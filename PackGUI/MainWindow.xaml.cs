@@ -8,16 +8,26 @@ namespace PackGUI
     {
         public MainWindow()
         {
-            Truck truck = new Truck(240, 1360, 260);
+            //Truck truck = new Truck(240, 1360, 260);
 
-            Package package = new Package(80, 400, 80);
-            Package package2 = new Package(240, 240, 80);
-            Package package3 = new Package(80, 400, 80);
+            //Package rack = new Package(80, 400, 80);
+            //Package square = new Package(80, 80, 80);
 
-            truck.Floors[0].StorePackage(package);
-            truck.Floors[0].StorePackage(package2);
-            truck.Floors[0].StorePackage(package);
-            truck.Floors[0].StorePackage(package);
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    truck.Floors[0].StorePackage(square);
+            //}
+
+            Truck truck = new Truck(100, 1000, 260);
+
+            Package p0 = new Package(40, 250, 80);
+            Package p1 = new Package(40, 500, 80);
+            Package p2 = new Package(30, 200, 80);
+
+            truck.Floors[0].StorePackage(p0);
+            truck.Floors[0].StorePackage(p1);
+            truck.Floors[0].StorePackage(p2);
+
         }
     }
 }
