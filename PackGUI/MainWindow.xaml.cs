@@ -12,9 +12,12 @@ namespace PackGUI
 
             Package package = new Package(80, 400, 80);
             Package package2 = new Package(240, 240, 80);
+            Package package3 = new Package(80, 400, 80);
 
             truck.Floors[0].StorePackage(package);
             truck.Floors[0].StorePackage(package2);
+            truck.Floors[0].StorePackage(package);
+            truck.Floors[0].StorePackage(package);
         }
     }
 }

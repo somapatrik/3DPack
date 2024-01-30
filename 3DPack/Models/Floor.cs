@@ -45,30 +45,32 @@ namespace _3DPack.Models
         public bool StorePackage(Package package)
         {
             bool packageStored = false;
-            
-            // Get a starting point with minimum y
-            Point start = StartingPoints.OrderBy(p => p.Y).First();
+
+            if (package.Height > OriginalHeight)
+                return packageStored;
 
             // Try to place package alongside y-axis
-            bool canPlace = false;
+            bool CanPlace = false;
+
             Point PlacementPoint = new Point();
 
             foreach (Point point in StartingPoints) 
             {
+                bool IsCollindingBlockedArea = false;
+                bool IsInside = false;
                 PlacementPoint = new Point(point.X, point.Y);
 
-                IsInsideFloor(package,PlacementPoint);
+                IsInside = IsInsideFloor(package,PlacementPoint);
+                IsCollindingBlockedArea = IsCollisionWithBlockedArea(package, PlacementPoint);
 
-                if (IsCollisionWithBlockedArea(package, PlacementPoint))
-                {
-                    canPlace = true;
-                    break;
-                }
+                CanPlace = IsInside && !IsCollindingBlockedArea;
+                
+                if (CanPlace)
+                    break;                   
             }
-            
 
             // Placement
-            if (canPlace)
+            if (CanPlace)
             {
                 AddBlockedArea(package, PlacementPoint);
                 AddPackage(package);
@@ -113,14 +115,10 @@ namespace _3DPack.Models
 
         private bool IsInsideFloor(Package package, Point point)
         {
-            bool IsInside = false;
-
             Rectangle floor = new Rectangle(FloorArea.X, FloorArea.Y, FloorArea.Width, FloorArea.Height);
             Rectangle packageFloor = PackageToArea(package, point);
-            
-            bool collide = floor.IntersectsWith(packageFloor);
 
-            return IsInside;
+            return floor.Contains(packageFloor);
         }
 
         private bool IsCollisionWithBlockedArea(Package package, Point point)
