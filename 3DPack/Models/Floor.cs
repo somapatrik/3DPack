@@ -4,9 +4,13 @@ namespace _3DPack.Models
 {
     public class Floor
     {
-        public int OriginalLength { get; private set; }
-        public int OriginalWidth { get; private set; }
-        public int OriginalHeight { get; private set; }
+        public int Length { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
+
+        public Point OriginPoint { get; private set; }
+        public int LevelHeight { get; private set; }
 
 
         List<Point> BorderPoints = new List<Point>();
@@ -16,13 +20,16 @@ namespace _3DPack.Models
         Rectangle FloorArea = new Rectangle();
         List<Point> StartingPoints = new List<Point>();
 
-        public Floor(int length, int width, int height)
+        public Floor(int length, int width, int height, Point originPoint = new Point(0,0), int levelHeight = 0)
         {
-            OriginalHeight = height;
-            OriginalWidth = width;
-            OriginalLength = length;
+            Height = height;
+            Width = width;
+            Length = length;
 
             DimensionsToPoints(length, width, height);
+
+            OriginPoint = originPoint;
+            LevelHeight = levelHeight;
         }
 
         private void DimensionsToPoints(int length, int width, int height)
@@ -42,11 +49,9 @@ namespace _3DPack.Models
             StartingPoints.Add(new Point(origin.X, origin.Y));
         }
 
-        public bool StorePackage(Package package)
+        public bool StorePackage(Package package, out Point storedPoint)
         {
-            bool packageStored = false;
-
-            if (package.Height > OriginalHeight)
+            if (package.Height > Height)
                 return packageStored;
 
             bool CanPlace = false;
@@ -64,10 +69,10 @@ namespace _3DPack.Models
             if (CanPlace)
             {
                 PlacePackage(package,PlacementPoint);
-                packageStored = true;
+                storedPoint = new Point(PlacementPoint.X, PlacementPoint.Y);
             }
 
-            return packageStored;
+            return CanPlace;
         }
 
         private void PlacePackage(Package package, Point PlacementPoint)
