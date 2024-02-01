@@ -7,11 +7,14 @@ namespace _3DPack.Models
         public int Length { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public int Area { get; private set; }
+        public int AvailableArea { get; private set; }
+        public int UsedArea { get; private set; }
 
         public Point OriginPoint { get; private set; }
         public int LevelHeight { get; private set; }
 
-        List<Point> BorderPoints = new List<Point>();
+        
         List<Package> Packages = new List<Package>();
         List<BlockedArea> BlockedAreas = new List<BlockedArea>();
 
@@ -24,27 +27,24 @@ namespace _3DPack.Models
             Width = width;
             Length = length;
 
-            DimensionsToPoints(length, width, height);
+            Area = Length * Width;
+            AvailableArea = Area;
 
             OriginPoint = originPoint;
+            DimensionsToPoints(length, width);
+
+            
             LevelHeight = levelHeight;
         }
 
-        private void DimensionsToPoints(int length, int width, int height)
+        private void DimensionsToPoints(int length, int width)
         {
-            Point origin = new Point(0, 0);
-            Point topRight = new Point(length, 0);
-
-            Point leftBottom = new Point(0,width);
-            Point rightBottom = new Point(length,width);
-
-            FloorArea.X = origin.X;
-            FloorArea.Y = origin.Y;
+            FloorArea.X = OriginPoint.X;
+            FloorArea.Y = OriginPoint.Y;
             FloorArea.Width = length;
             FloorArea.Height = width;
 
-            BorderPoints = new List<Point>() { origin, topRight, leftBottom, rightBottom };
-            StartingPoints.Add(new Point(origin.X, origin.Y));
+            StartingPoints.Add(new Point(OriginPoint.X, OriginPoint.Y));
         }
 
         public bool StorePackage(Package package, out Point PlacementPoint)
@@ -59,7 +59,6 @@ namespace _3DPack.Models
             {
                 PlacementPoint = new Point(point.X, point.Y);
 
-                //CanPlace = CanPlacePackage(package, PlacementPoint);
                 CanPlace = TryAllRotations(package, PlacementPoint);
 
                 if (CanPlace)
@@ -95,9 +94,12 @@ namespace _3DPack.Models
         private void PlacePackage(Package package, Point PlacementPoint)
         {
             AddBlockedArea(package, PlacementPoint);
+            SubtrackArea(package);
+            AddUsedArea(package);
             AddPackage(package);
             RemoveStartingPoint(PlacementPoint);
             SortStartingPoints();
+
         }
 
         private bool CanPlacePackage(Package package, Point point)
@@ -106,6 +108,16 @@ namespace _3DPack.Models
             bool IsCollidingBlockedArea = IsCollisionWithBlockedArea(package, point);
 
             return IsInside && !IsCollidingBlockedArea;
+        }
+
+        private void SubtrackArea(Package package)
+        {
+            AvailableArea -= package.Area;
+        }
+
+        private void AddUsedArea(Package package)
+        {
+            UsedArea += package.Area;
         }
 
         private void SortStartingPoints()

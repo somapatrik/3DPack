@@ -10,9 +10,17 @@ namespace _3DPack.Models
         public int Width { get; set; }
         public int Height { get; set; }
         public int Length { get; set; }
-        public int Levels { get; set; }
-
         public List<Floor> Floors { get; set; }
+
+        public List<Package> Packages { get; private set; }
+
+        public int UsedArea
+        {
+            get
+            {
+                return Floors.Sum(f => f.UsedArea);
+            }
+        }
 
         public static Truck Create(string name, int length, int width, int height)
         {
@@ -31,18 +39,20 @@ namespace _3DPack.Models
             { 
                 new Floor(length, width, height, new Point(0,0), 0) 
             };
+
+            Packages = new List<Package>();
         }
 
-        public void InsertPackage(Package package)
+        public bool InsertPackage(Package package)
         {
-            SortFloors();
-
             List<Floor> newFloors = new List<Floor>();
             Point placementPoint = new Point();
 
-            foreach (Floor floor in Floors)
+            bool stored = false;
+
+            foreach (Floor floor in Floors.Where(f=>f.Height >= package.Height))
             {
-                bool stored = floor.StorePackage(package, out placementPoint);
+                stored = floor.StorePackage(package, out placementPoint);
 
                 // Create new floor
                 if (stored && package.Stackable)
@@ -50,8 +60,13 @@ namespace _3DPack.Models
 
                 // Done
                 if (stored)
+                {
+                    Packages.Add(package);
                     break;
+                }
             }
+
+            return stored;
         }
 
         private void CreateNewFloor(int startHeight, Point placementPoint, Package onPackage)
@@ -62,6 +77,7 @@ namespace _3DPack.Models
             if (availableHeight > 0)
             {
                 Floors.Add(new Floor(onPackage.Length, onPackage.Width, availableHeight, placementPoint, newFloorHeight));
+                SortFloors();
             }
         }
 

@@ -11,6 +11,7 @@ namespace _3DPack.Models
         public int Length { get; private set; }
         public bool Rotated { get; private set; }
         public bool Stackable { get; private set; }
+        public int Area { get; private set; }
 
         public RotationType Rotation
         {
@@ -39,7 +40,7 @@ namespace _3DPack.Models
             Height = height;
             Length = length;
             Stackable = stackable;
-
+            Area = width * length;
         }
 
         public void SetName(string name)
