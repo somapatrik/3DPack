@@ -8,10 +8,8 @@ namespace _3DPack.Models
         public int Width { get; private set; }
         public int Height { get; private set; }
 
-
         public Point OriginPoint { get; private set; }
         public int LevelHeight { get; private set; }
-
 
         List<Point> BorderPoints = new List<Point>();
         List<Package> Packages = new List<Package>();
@@ -20,7 +18,7 @@ namespace _3DPack.Models
         Rectangle FloorArea = new Rectangle();
         List<Point> StartingPoints = new List<Point>();
 
-        public Floor(int length, int width, int height, Point originPoint = new Point(0,0), int levelHeight = 0)
+        public Floor(int length, int width, int height, Point originPoint, int levelHeight)
         {
             Height = height;
             Width = width;
@@ -49,30 +47,49 @@ namespace _3DPack.Models
             StartingPoints.Add(new Point(origin.X, origin.Y));
         }
 
-        public bool StorePackage(Package package, out Point storedPoint)
+        public bool StorePackage(Package package, out Point PlacementPoint)
         {
-            if (package.Height > Height)
-                return packageStored;
-
             bool CanPlace = false;
-            Point PlacementPoint = new Point();
+            PlacementPoint = new Point();
 
+            if (package.Height > Height)
+                return false;
+            
             foreach (Point point in StartingPoints)
             {
                 PlacementPoint = new Point(point.X, point.Y);
-                CanPlace = CanPlacePackage(package, PlacementPoint);
+
+                //CanPlace = CanPlacePackage(package, PlacementPoint);
+                CanPlace = TryAllRotations(package, PlacementPoint);
 
                 if (CanPlace)
-                    break;                   
+                    break;
             }
 
             if (CanPlace)
-            {
                 PlacePackage(package,PlacementPoint);
-                storedPoint = new Point(PlacementPoint.X, PlacementPoint.Y);
-            }
 
             return CanPlace;
+        }
+
+        private bool TryAllRotations(Package package, Point PlacementPoint)
+        {
+            if (package.Rotation == RotationType.Equilateral)
+                return CanPlacePackage(package, PlacementPoint);
+
+            if (package.Rotation != RotationType.Horizontal)
+                package.RotateToBeHorizontal();
+            
+            if (CanPlacePackage(package, PlacementPoint))
+                return true;
+
+            if (package.Rotation != RotationType.Vertical)
+                package.RotateToBeVertical();
+
+            if (CanPlacePackage(package, PlacementPoint))
+                return true;
+
+            return false;
         }
 
         private void PlacePackage(Package package, Point PlacementPoint)
