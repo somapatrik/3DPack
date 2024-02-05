@@ -6,11 +6,16 @@ namespace PackGUI
 
     public partial class MainWindow : Window
     {
-        List<Package> availablePackages = new List<Package>();
+        public List<Package> availablePackages = new List<Package>();
         List<Truck> availableTrucks = new List<Truck>();
+
+        List<Package> selectedPackaged = new List<Package>();
+
+        Packager Packager = new Packager();
 
         public MainWindow()
         {
+            InitializeComponent();
             availablePackages.AddRange(
             [
                 Package.Create("Rack", 80, 400, 80, true),
@@ -30,9 +35,47 @@ namespace PackGUI
                 Truck.Create("Truck", 240, 1360, 260)
             ]);
 
-            Packager packager = new Packager();
-            packager.Optimize(availableTrucks, availablePackages);
+            allPackages.ItemsSource = availablePackages;
+            //selectedPacks.ItemsSource = selectedPackaged;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            selectedPacks.Items.Add(((Package)allPackages.SelectedItem).Clone());
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            selectedPacks.Items.Remove((Package)selectedPacks.SelectedItem);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            List<Package> packages = new List<Package>();
+            foreach (var pack in selectedPacks.Items)
+                packages.Add(((Package)pack).Clone());
             
+            Packager.Ready(availableTrucks, packages);
+            permCount.Text = Packager.PermutationCount.ToString();
+            btnRun.IsEnabled = true;
+        }
+
+        private async void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            var r = await Packager.Optimize();
+
+            var hovno = r.OrderByDescending(r=>r.Trucks.Count).First();
+
+            btnRun.IsEnabled = false;
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            selectedPacks.Items.Clear();
+            foreach (var item in availablePackages)
+            {
+                selectedPacks.Items.Add(item.Clone());
+            }
         }
     }
 }

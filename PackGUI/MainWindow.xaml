@@ -5,8 +5,87 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PackGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="900">
+        Title="MainWindow" Height="500" Width="900" Background="GhostWhite">
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <Grid Margin="0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Column="0" Background="DarkOrange" CornerRadius="0,7,7,0">
+                <TextBlock Text="3D Packing prototype" 
+                           HorizontalAlignment="Right" 
+                           Foreground="White" 
+                           FontSize="22" 
+                           Margin="10"/>
+            </Border>
+            
+            
+        </Grid>
+
+
+        <Grid Grid.Row="1">
+        
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <ListBox x:Name="allPackages"
+                     DisplayMemberPath="Name"
+                     Background="Transparent"
+                     BorderThickness=".5">
+                
+            </ListBox>
+
+            <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10" VerticalAlignment="Center">
+                <Button Content="Insert" Margin="5" Padding="5" Click="Button_Click"/>
+                <Button Content="Insert all" Margin="5" Padding="5" Click="Button_Click_4"/>
+                <Button Content="Remove" Margin="5" Padding="5" Click="Button_Click_1"/>
+            </StackPanel>
+            
+
+            <ListBox Grid.Column="2"
+                     x:Name="selectedPacks"
+                     DisplayMemberPath="Name">
+                
+            </ListBox>
+
+            <Grid Grid.Row="0" Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Ready" Padding="5" Margin="5" Click="Button_Click_2"/>
+                    <Button x:Name="btnRun" IsEnabled="False" Content="Run" Padding="5" Margin="5" Click="Button_Click_3"/>
+                </StackPanel>
+
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="Permutations: " FontWeight="Bold"/>
+                    <TextBlock x:Name="permCount"/>
+                </StackPanel>
+
+            </Grid>
+
+        </Grid>
+
+
+       
+        
     </Grid>
+    
 </Window>

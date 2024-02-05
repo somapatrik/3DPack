@@ -9,20 +9,24 @@ namespace _3DPack.Models
         List<List<Package>> PackagePermutations { get; set; }
         List<PackagerResult> Results { get; set; }
 
-        private bool RunningTest;
+        public int PermutationCount => PackagePermutations.Count();
         public Packager()
         {
             Trucks = new List<Truck>();
             Packages = new List<Package>();
         }
 
-        public void Optimize(List<Truck> trucks, List<Package> packages)
+        public void Ready(List<Truck> trucks, List<Package> packages)
         {
             Trucks = trucks;
             Packages = packages;
             PermutatePackages();
+        }
 
-            Run();
+        public async Task<List<PackagerResult>> Optimize()
+        {
+           await Run();
+            return Results;
         }
 
         private Task Run()
@@ -32,9 +36,23 @@ namespace _3DPack.Models
             foreach (List<Package> permutation in PackagePermutations)
             {
                 PackagerResult result = new PackagerResult();
-                
-                Truck winnerTruck = CheckAllTrucks(permutation);
-                result.Trucks.Add(winnerTruck);
+               // List<Package> toPack = permutation.Select(s => s.Clone()).ToList();
+
+                List<Package> Packed = new List<Package>();
+                List<Package> NotPacked = permutation.Select(s => s.Clone()).ToList(); 
+
+                bool allPacked = false;
+
+                while (!allPacked) 
+                { 
+                    Truck winnerTruck = CheckAllTrucks(NotPacked);
+                    result.Trucks.Add(winnerTruck);
+
+                    winnerTruck.Packages.ForEach(packed => NotPacked.Remove(packed));
+
+                    allPacked = result.Trucks.Sum(allPacked => allPacked.Packages.Count()) == permutation.Count();
+                }
+
                 Results.Add(result);
             }
 
@@ -59,14 +77,6 @@ namespace _3DPack.Models
 
             // Most used area with the most packages inside
             return checkedTrucks.OrderByDescending(t => t.UsedArea).ThenByDescending(p=>p.Packages.Count).First();
-        }
-
-        private void FillTruck(Truck truck, List<Package> packages)
-        {
-            foreach (Package package in packages)
-            {
-                truck.InsertPackage(package);
-            }
         }
 
         private void PermutatePackages()
@@ -98,24 +108,7 @@ namespace _3DPack.Models
                 }
             }
         }
-        //private void GeneratePermutationsWithRotation(List<Package> list, int index, List<List<Package>> result)
-        //{
-        //    if (index == list.Count)
-        //    {
-        //        // Přidání permutace do výsledku
-        //        result.Add(new List<Package>(list));
-        //    }
-        //    else
-        //    {
-        //        // Není otáčený
-        //        GeneratePermutationsWithRotation(list, index + 1, result);
 
-        //        // Otáčený
-        //        list[index].Rotate();
-        //        GeneratePermutationsWithRotation(list, index + 1, result);
-        //        list[index].Rotate();
-        //    }
-        //}
         private void Swap<T>(List<T> list, int i, int j)
         {
             T temp = list[i];
