@@ -1,7 +1,4 @@
-﻿
-using System.Drawing;
-
-namespace _3DPack.Models
+﻿namespace _3DPack.Models
 {
     public class Package
     {
@@ -67,6 +64,9 @@ namespace _3DPack.Models
                 Rotate();
         }
 
-
+        public Package Clone()
+        {
+             return Create(Name, Length, Width, Height, Stackable);
+        }
     }
 }

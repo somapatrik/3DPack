@@ -32,16 +32,10 @@ namespace _3DPack.Models
             foreach (List<Package> permutation in PackagePermutations)
             {
                 PackagerResult result = new PackagerResult();
-
-                List<Package> toPack = new List<Package>();
-                permutation.ForEach(per => toPack.Add(per.c));
                 
-                while (toPack.Count > 0) 
-                { 
-                    Truck winnerTruck =  CheckAllTrucks(toPack);
-                    winnerTruck.Packages.ForEach(p=>toPack.Remove(p));
-                    result.Trucks.Add(winnerTruck);
-                }
+                Truck winnerTruck = CheckAllTrucks(permutation);
+                result.Trucks.Add(winnerTruck);
+                Results.Add(result);
             }
 
             return Task.CompletedTask;
@@ -52,7 +46,7 @@ namespace _3DPack.Models
             List<Truck> availableTrucks = new List<Truck>();
             List<Truck> checkedTrucks = new List<Truck>();
 
-            Trucks.ForEach(availableTrucks.Add);
+            availableTrucks = Trucks.Select(t => t.Clone()).ToList();
 
             foreach (var truck in availableTrucks)
             {
@@ -63,7 +57,8 @@ namespace _3DPack.Models
                 checkedTrucks.Add(truck);
             }
 
-            return checkedTrucks.OrderByDescending(t => t.UsedArea).First();
+            // Most used area with the most packages inside
+            return checkedTrucks.OrderByDescending(t => t.UsedArea).ThenByDescending(p=>p.Packages.Count).First();
         }
 
         private void FillTruck(Truck truck, List<Package> packages)
@@ -103,24 +98,24 @@ namespace _3DPack.Models
                 }
             }
         }
-        private void GeneratePermutationsWithRotation(List<Package> list, int index, List<List<Package>> result)
-        {
-            if (index == list.Count)
-            {
-                // Přidání permutace do výsledku
-                result.Add(new List<Package>(list));
-            }
-            else
-            {
-                // Není otáčený
-                GeneratePermutationsWithRotation(list, index + 1, result);
+        //private void GeneratePermutationsWithRotation(List<Package> list, int index, List<List<Package>> result)
+        //{
+        //    if (index == list.Count)
+        //    {
+        //        // Přidání permutace do výsledku
+        //        result.Add(new List<Package>(list));
+        //    }
+        //    else
+        //    {
+        //        // Není otáčený
+        //        GeneratePermutationsWithRotation(list, index + 1, result);
 
-                // Otáčený
-                list[index].Rotate();
-                GeneratePermutationsWithRotation(list, index + 1, result);
-                list[index].Rotate();
-            }
-        }
+        //        // Otáčený
+        //        list[index].Rotate();
+        //        GeneratePermutationsWithRotation(list, index + 1, result);
+        //        list[index].Rotate();
+        //    }
+        //}
         private void Swap<T>(List<T> list, int i, int j)
         {
             T temp = list[i];

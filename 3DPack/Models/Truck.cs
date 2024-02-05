@@ -1,6 +1,4 @@
-﻿
-
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace _3DPack.Models
 {
@@ -89,6 +87,11 @@ namespace _3DPack.Models
         public void SetName(string name)
         {
             Name = name;
+        }
+
+        public Truck Clone()
+        {
+            return Create(Name, Length, Width, Height);
         }
     }
 
