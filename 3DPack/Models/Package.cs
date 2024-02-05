@@ -68,5 +68,17 @@
         {
              return Create(Name, Length, Width, Height, Stackable);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType()) return false;
+            Package other = (Package)obj;
+            return this.Name == other.Name && this.Length == other.Length && this.Width == other.Width && this.Height == other.Height;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, Length, Width, Height);
+        }
     }
 }

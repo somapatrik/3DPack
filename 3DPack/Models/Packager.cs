@@ -81,17 +81,34 @@ namespace _3DPack.Models
 
         private void PermutatePackages()
         {
-            PackagePermutations = GetPermutations(Packages);
+            // PackagePermutations = GetPermutations(Packages);
+            PackagePermutations = GenerateHPermutations(Packages);
         }
 
-        private List<List<T>> GetPermutations<T>(List<T> list)
+        //private List<List<T>> GetPermutations<T>(List<T> list)
+        //{
+        //    List<List<T>> result = new List<List<T>>();
+        //    GeneratePermutations(list, 0, list.Count - 1, result);
+        //    return result;
+        //}
+
+        private List<List<Package>> GeneratePermutations(List<Package> packages)
         {
-            List<List<T>> result = new List<List<T>>();
-            GeneratePermutations(list, 0, list.Count - 1, result);
-            return result;
+            //HashSet<Package> uniquePackages = new HashSet<Package>(packages);
+            //List<List<Package>> allPermutations = new List<List<Package>>();
+
+            //HeapPermutation(new List<Package>(uniquePackages), uniquePackages.Count, allPermutations);
+
+            //return allPermutations;
+            //--
+            int n = packages.Count;
+            List<List<Package>> allPermutations = new List<List<Package>>();
+
+            HeapPermutation(packages, n, allPermutations);
+
+            return allPermutations;
         }
 
-        #region Permutations
         private void GeneratePermutations<T>(List<T> list, int left, int right, List<List<T>> result)
         {
             if (left == right)
@@ -115,7 +132,45 @@ namespace _3DPack.Models
             list[i] = list[j];
             list[j] = temp;
         }
-        
-        #endregion
+
+        private List<List<Package>> GenerateHPermutations(List<Package> packages)
+        {
+            //HashSet<Package> uniquePackages = new HashSet<Package>(packages);
+            //List<List<Package>> allPermutations = new List<List<Package>>();
+
+            //HeapPermutation(new List<Package>(uniquePackages), uniquePackages.Count, allPermutations);
+
+            int n = packages.Count;
+            List<List<Package>> allPermutations = new List<List<Package>>();
+
+            HeapPermutation(packages, n, allPermutations);
+
+            return allPermutations;
+            //return allPermutations;
+        }
+
+        private void HeapPermutation(List<Package> packages, int size, List<List<Package>> allPermutations)
+        {
+            if (size == 1)
+            {
+                allPermutations.Add(new List<Package>(packages));
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                HeapPermutation(packages, size - 1, allPermutations);
+
+                if (size % 2 == 1)
+                {
+                    Swap(packages, 0, size - 1);
+                }
+                else
+                {
+                    Swap(packages, i, size - 1);
+                }
+            }
+        }
+
+
     }
 }
