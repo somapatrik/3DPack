@@ -62,9 +62,7 @@ namespace PackGUI
 
         private async void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            var r = await Packager.Optimize();
-
-            var hovno = r.OrderByDescending(r=>r.Trucks.Count).First();
+            Packager.Optimize();
 
             btnRun.IsEnabled = false;
         }

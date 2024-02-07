@@ -13,8 +13,7 @@ namespace _3DPack.Models
 
         public Point OriginPoint { get; private set; }
         public int LevelHeight { get; private set; }
-
-        
+                
         List<Package> Packages = new List<Package>();
         List<BlockedArea> BlockedAreas = new List<BlockedArea>();
 
@@ -33,7 +32,6 @@ namespace _3DPack.Models
             OriginPoint = originPoint;
             DimensionsToPoints(length, width);
 
-            
             LevelHeight = levelHeight;
         }
 
@@ -69,6 +67,48 @@ namespace _3DPack.Models
                 PlacePackage(package,PlacementPoint);
 
             return CanPlace;
+        }
+
+        public bool CheckPackagePlacement(Package package, out Point PlacementPoint, out int ldmRemain)
+        {
+            bool CanPlace = false;
+            PlacementPoint = new Point();
+            ldmRemain = 0;
+
+            if (package.Height > Height)
+                return false;
+
+            foreach (Point point in StartingPoints)
+            {
+                PlacementPoint = new Point(point.X, point.Y);
+                ldmRemain = 0;
+
+                CanPlace = TryAllRotations(package, PlacementPoint);
+
+                if (CanPlace)
+                {
+                    AnalyzePlacement(package, PlacementPoint, out ldmRemain);
+                    break;
+                }
+                    
+            }
+
+            return CanPlace;
+        }
+
+        public void StorePackage(Package package, Point placementPoint)
+        {
+            PlacePackage(package, new Point(placementPoint.X, placementPoint.Y));
+        }
+
+        private void AnalyzePlacement(Package package, Point PlacementPoint, out int ldmRemain) 
+        {
+            BlockedArea potencionalArea = new BlockedArea(PlacementPoint, package.Length, package.Width);
+            int actualMaxY = StartingPoints.Max(s => s.Y);
+
+            actualMaxY = potencionalArea.BottomLeft.Y > actualMaxY ? potencionalArea.BottomLeft.Y : actualMaxY;
+
+            ldmRemain = (FloorArea.Y + FloorArea.Height) - actualMaxY;
         }
 
         private bool TryAllRotations(Package package, Point PlacementPoint)
@@ -140,14 +180,8 @@ namespace _3DPack.Models
             BlockedArea blocked = new BlockedArea(placementPoint, package.Length, package.Width);
             BlockedAreas.Add(blocked);
 
-            // Starting points should be NEXT to a blocked area
-            // NOT USED DUE TO THE RECTANGLE CLASS FUNCTIONS
-
             Point topRight = blocked.TopRight;
-            // topRight.X += 1;
-
             Point bottomLeft = blocked.BottomLeft;
-            // bottomLeft.Y += 1;
 
             StartingPoints.Add(topRight);
             StartingPoints.Add(bottomLeft);

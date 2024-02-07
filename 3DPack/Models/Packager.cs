@@ -9,7 +9,7 @@ namespace _3DPack.Models
         List<List<Package>> PackagePermutations { get; set; }
         List<PackagerResult> Results { get; set; }
 
-        public int PermutationCount => PackagePermutations.Count();
+        public int PermutationCount => 10;
         public Packager()
         {
             Trucks = new List<Truck>();
@@ -20,13 +20,19 @@ namespace _3DPack.Models
         {
             Trucks = trucks;
             Packages = packages;
-            PermutatePackages();
+            //PermutatePackages();
         }
 
-        public async Task<List<PackagerResult>> Optimize()
+        public void Optimize()
         {
-           await Run();
-            return Results;
+           Run2();
+            //return Results;
+        }
+
+        private void Run2()
+        {
+            var unpacked = Packages.Select(p => p.Clone()).ToList();
+            Trucks[1].StorePackages(unpacked);
         }
 
         private Task Run()
@@ -36,7 +42,6 @@ namespace _3DPack.Models
             foreach (List<Package> permutation in PackagePermutations)
             {
                 PackagerResult result = new PackagerResult();
-               // List<Package> toPack = permutation.Select(s => s.Clone()).ToList();
 
                 List<Package> Packed = new List<Package>();
                 List<Package> NotPacked = permutation.Select(s => s.Clone()).ToList(); 
