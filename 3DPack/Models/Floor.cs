@@ -152,12 +152,12 @@ namespace _3DPack.Models
 
         private void SubtrackArea(Package package)
         {
-            AvailableArea -= package.Area;
+            AvailableArea -= package.BaseArea;
         }
 
         private void AddUsedArea(Package package)
         {
-            UsedArea += package.Area;
+            UsedArea += package.BaseArea;
         }
 
         private void SortStartingPoints()

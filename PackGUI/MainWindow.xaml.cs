@@ -55,14 +55,14 @@ namespace PackGUI
             foreach (var pack in selectedPacks.Items)
                 packages.Add(((Package)pack).Clone());
             
-            Packager.Ready(availableTrucks, packages);
+            Packager.Setup(availableTrucks, packages);
             permCount.Text = Packager.PermutationCount.ToString();
             btnRun.IsEnabled = true;
         }
 
         private async void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            Packager.Optimize();
+            Packager.Pack();
 
             btnRun.IsEnabled = false;
         }

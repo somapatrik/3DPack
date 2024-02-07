@@ -6,176 +6,60 @@ namespace _3DPack.Models
     {
         List<Truck> Trucks { get; set; }
         List<Package> Packages { get; set; }
-        List<List<Package>> PackagePermutations { get; set; }
         List<PackagerResult> Results { get; set; }
 
-        public int PermutationCount => 10;
         public Packager()
         {
             Trucks = new List<Truck>();
             Packages = new List<Package>();
         }
 
-        public void Ready(List<Truck> trucks, List<Package> packages)
+        public void Setup(List<Truck> trucks, List<Package> packages)
         {
             Trucks = trucks;
             Packages = packages;
-            //PermutatePackages();
         }
 
-        public void Optimize()
+        public void Pack()
         {
-           Run2();
-            //return Results;
+            Run();
         }
 
-        private void Run2()
+        private List<Truck> Run()
         {
-            var unpacked = Packages.Select(p => p.Clone()).ToList();
-            Trucks[1].StorePackages(unpacked);
-        }
+            var ResultsTrucks = new List<Truck>();
 
-        private Task Run()
-        {
-            Results = new List<PackagerResult>();
+            List<Package> NotPacked = Packages.Select(p => p.Clone()).ToList();
+            bool allPacked = false;
 
-            foreach (List<Package> permutation in PackagePermutations)
-            {
-                PackagerResult result = new PackagerResult();
+            while (!allPacked) 
+            { 
+                Truck winnerTruck = TryAllTrucks(NotPacked);
+                ResultsTrucks.Add(winnerTruck);
 
-                List<Package> Packed = new List<Package>();
-                List<Package> NotPacked = permutation.Select(s => s.Clone()).ToList(); 
+                winnerTruck.Packages.ForEach(stored =>
+                {
+                    NotPacked.RemoveAll(r => r.Id == stored.Id);
+                });
 
-                bool allPacked = false;
-
-                while (!allPacked) 
-                { 
-                    Truck winnerTruck = CheckAllTrucks(NotPacked);
-                    result.Trucks.Add(winnerTruck);
-
-                    winnerTruck.Packages.ForEach(packed => NotPacked.Remove(packed));
-
-                    allPacked = result.Trucks.Sum(allPacked => allPacked.Packages.Count()) == permutation.Count();
-                }
-
-                Results.Add(result);
+                allPacked = !NotPacked.Any();
             }
-
-            return Task.CompletedTask;
+            return ResultsTrucks;
         }
 
-        private Truck CheckAllTrucks(List<Package> packages)
+        private Truck TryAllTrucks(List<Package> packages)
         {
-            List<Truck> availableTrucks = new List<Truck>();
+            List<Truck> availableTrucks = Trucks.Select(t => t.Clone()).ToList();
             List<Truck> checkedTrucks = new List<Truck>();
-
-            availableTrucks = Trucks.Select(t => t.Clone()).ToList();
 
             foreach (var truck in availableTrucks)
             {
-                foreach (var package in packages)
-                {
-                    truck.InsertPackage(package);
-                }
+                truck.StorePackages(packages.Select(p => p.Clone()).ToList());
                 checkedTrucks.Add(truck);
             }
 
-            // Most used area with the most packages inside
-            return checkedTrucks.OrderByDescending(t => t.UsedArea).ThenByDescending(p=>p.Packages.Count).First();
+            return checkedTrucks.OrderByDescending(t => t.UsedArea).ThenByDescending(p => p.Packages.Count).First();
         }
-
-        private void PermutatePackages()
-        {
-            // PackagePermutations = GetPermutations(Packages);
-            PackagePermutations = GenerateHPermutations(Packages);
-        }
-
-        //private List<List<T>> GetPermutations<T>(List<T> list)
-        //{
-        //    List<List<T>> result = new List<List<T>>();
-        //    GeneratePermutations(list, 0, list.Count - 1, result);
-        //    return result;
-        //}
-
-        private List<List<Package>> GeneratePermutations(List<Package> packages)
-        {
-            //HashSet<Package> uniquePackages = new HashSet<Package>(packages);
-            //List<List<Package>> allPermutations = new List<List<Package>>();
-
-            //HeapPermutation(new List<Package>(uniquePackages), uniquePackages.Count, allPermutations);
-
-            //return allPermutations;
-            //--
-            int n = packages.Count;
-            List<List<Package>> allPermutations = new List<List<Package>>();
-
-            HeapPermutation(packages, n, allPermutations);
-
-            return allPermutations;
-        }
-
-        private void GeneratePermutations<T>(List<T> list, int left, int right, List<List<T>> result)
-        {
-            if (left == right)
-            {
-                result.Add(new List<T>(list));
-            }
-            else
-            {
-                for (int i = left; i <= right; i++)
-                {
-                    Swap(list, left, i);
-                    GeneratePermutations(list, left + 1, right, result);
-                    Swap(list, left, i); 
-                }
-            }
-        }
-
-        private void Swap<T>(List<T> list, int i, int j)
-        {
-            T temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
-        }
-
-        private List<List<Package>> GenerateHPermutations(List<Package> packages)
-        {
-            //HashSet<Package> uniquePackages = new HashSet<Package>(packages);
-            //List<List<Package>> allPermutations = new List<List<Package>>();
-
-            //HeapPermutation(new List<Package>(uniquePackages), uniquePackages.Count, allPermutations);
-
-            int n = packages.Count;
-            List<List<Package>> allPermutations = new List<List<Package>>();
-
-            HeapPermutation(packages, n, allPermutations);
-
-            return allPermutations;
-            //return allPermutations;
-        }
-
-        private void HeapPermutation(List<Package> packages, int size, List<List<Package>> allPermutations)
-        {
-            if (size == 1)
-            {
-                allPermutations.Add(new List<Package>(packages));
-            }
-
-            for (int i = 0; i < size; i++)
-            {
-                HeapPermutation(packages, size - 1, allPermutations);
-
-                if (size % 2 == 1)
-                {
-                    Swap(packages, 0, size - 1);
-                }
-                else
-                {
-                    Swap(packages, i, size - 1);
-                }
-            }
-        }
-
 
     }
 }

@@ -2,13 +2,17 @@
 {
     public class Package
     {
+        public Guid Id { get; set; }
         public string Name { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int Length { get; private set; }
-        public bool Rotated { get; private set; }
         public bool Stackable { get; private set; }
-        public int Area { get; private set; }
+        public int BaseArea { get; private set; }
+        public int PackageArea { get; private set; }
+        public int Volume { get; private set; }
+
+        public int LargerDimension => Length > Width ? Length : Width;
 
         public RotationType Rotation
         {
@@ -31,18 +35,35 @@
             return pack;
         }
 
+        public static Package CreateClone(Guid id, string name, int length, int width, int height, bool stackable = false)
+        {
+            var pack = new Package(length, width, height, stackable);
+            pack.SetName(name);
+            pack.CloneId(id);
+            return pack;
+        }
+
         public Package(int length, int width, int height, bool stackable = false)
         {
+            Id = Guid.NewGuid();
             Width = width;
             Height = height;
             Length = length;
             Stackable = stackable;
-            Area = width * length;
+
+            BaseArea = width * length;
+            PackageArea = 2*(length * width + length * height + width * height);
+            Volume = length * width * height;
         }
 
         public void SetName(string name)
         {
             Name = name;
+        }
+
+        public void CloneId(Guid id)
+        {
+            Id = id;
         }
 
         public void Rotate()
@@ -66,19 +87,7 @@
 
         public Package Clone()
         {
-             return Create(Name, Length, Width, Height, Stackable);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || GetType() != obj.GetType()) return false;
-            Package other = (Package)obj;
-            return this.Name == other.Name && this.Length == other.Length && this.Width == other.Width && this.Height == other.Height;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Name, Length, Width, Height);
+             return CreateClone(Id,Name, Length, Width, Height, Stackable);
         }
     }
 }
