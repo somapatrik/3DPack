@@ -1,4 +1,4 @@
-﻿using _3DPack.Models;
+﻿using _3DPack;
 using System.Windows;
 
 namespace PackGUI
@@ -56,7 +56,6 @@ namespace PackGUI
                 packages.Add(((Package)pack).Clone());
             
             Packager.Setup(availableTrucks, packages);
-            permCount.Text = Packager.PermutationCount.ToString();
             btnRun.IsEnabled = true;
         }
 

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace _3DPack.Models
+namespace _3DPack
 {
     public class Truck
     {
@@ -33,9 +33,9 @@ namespace _3DPack.Models
             Height = height;
             Length = length;
 
-            Floors = new List<Floor>() 
-            { 
-                new Floor(length, width, height, new Point(0,0), 0) 
+            Floors = new List<Floor>()
+            {
+                new Floor(length, width, height, new Point(0,0), 0)
             };
 
             Packages = new List<Package>();
@@ -50,7 +50,7 @@ namespace _3DPack.Models
 
             foreach (Package pack in packages)
             {
-                foreach (Floor floor in Floors.Where(f=>f.Height >= pack.Height))
+                foreach (Floor floor in Floors.Where(f => f.Height >= pack.Height))
                 {
                     int ldmRemain = 0;
                     Point placementPoint = new Point();
@@ -59,8 +59,8 @@ namespace _3DPack.Models
                     {
                         PotentionalPacking.Add(new PlacementResult()
                         {
-                            Package = pack, 
-                            Floor = floor, 
+                            Package = pack,
+                            Floor = floor,
                             PlacementPoint = new Point(placementPoint.X, placementPoint.Y),
                             RemainingLDM = ldmRemain
                         });
@@ -70,7 +70,7 @@ namespace _3DPack.Models
                 }
             }
 
-            var winner = PotentionalPacking.OrderByDescending(p=>p.RemainingLDM).FirstOrDefault();
+            var winner = PotentionalPacking.OrderByDescending(p => p.RemainingLDM).FirstOrDefault();
 
             if (winner != null)
             {
@@ -95,7 +95,7 @@ namespace _3DPack.Models
 
             bool stored = false;
 
-            foreach (Floor floor in Floors.Where(f=>f.Height >= package.Height))
+            foreach (Floor floor in Floors.Where(f => f.Height >= package.Height))
             {
                 stored = floor.StorePackage(package, out placementPoint);
 
@@ -128,7 +128,7 @@ namespace _3DPack.Models
 
         private void SortFloors()
         {
-           Floors = Floors.OrderByDescending(f => f.LevelHeight).ToList();
+            Floors = Floors.OrderByDescending(f => f.LevelHeight).ToList();
         }
 
         public void SetName(string name)

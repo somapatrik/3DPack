@@ -1,7 +1,7 @@
 ﻿
 using System.Drawing;
 
-namespace _3DPack.Models
+namespace _3DPack
 {
     public class PlacementResult
     {

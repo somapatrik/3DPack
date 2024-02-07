@@ -1,4 +1,4 @@
-﻿namespace _3DPack.Models
+﻿namespace _3DPack
 {
     public class Package
     {
@@ -23,7 +23,7 @@
 
                 if (Length < Width)
                     return RotationType.Vertical;
-                
+
                 return RotationType.Horizontal;
             }
         }
@@ -52,7 +52,7 @@
             Stackable = stackable;
 
             BaseArea = width * length;
-            PackageArea = 2*(length * width + length * height + width * height);
+            PackageArea = 2 * (length * width + length * height + width * height);
             Volume = length * width * height;
         }
 
@@ -87,7 +87,7 @@
 
         public Package Clone()
         {
-             return CreateClone(Id,Name, Length, Width, Height, Stackable);
+            return CreateClone(Id, Name, Length, Width, Height, Stackable);
         }
     }
 }

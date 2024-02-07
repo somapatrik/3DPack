@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace _3DPack.Models
+namespace _3DPack
 {
     public class Floor
     {
@@ -13,7 +13,7 @@ namespace _3DPack.Models
 
         public Point OriginPoint { get; private set; }
         public int LevelHeight { get; private set; }
-                
+
         List<Package> Packages = new List<Package>();
         List<BlockedArea> BlockedAreas = new List<BlockedArea>();
 
@@ -52,7 +52,7 @@ namespace _3DPack.Models
 
             if (package.Height > Height)
                 return false;
-            
+
             foreach (Point point in StartingPoints)
             {
                 PlacementPoint = new Point(point.X, point.Y);
@@ -64,7 +64,7 @@ namespace _3DPack.Models
             }
 
             if (CanPlace)
-                PlacePackage(package,PlacementPoint);
+                PlacePackage(package, PlacementPoint);
 
             return CanPlace;
         }
@@ -90,7 +90,7 @@ namespace _3DPack.Models
                     AnalyzePlacement(package, PlacementPoint, out ldmRemain);
                     break;
                 }
-                    
+
             }
 
             return CanPlace;
@@ -101,14 +101,14 @@ namespace _3DPack.Models
             PlacePackage(package, new Point(placementPoint.X, placementPoint.Y));
         }
 
-        private void AnalyzePlacement(Package package, Point PlacementPoint, out int ldmRemain) 
+        private void AnalyzePlacement(Package package, Point PlacementPoint, out int ldmRemain)
         {
             BlockedArea potencionalArea = new BlockedArea(PlacementPoint, package.Length, package.Width);
             int actualMaxY = StartingPoints.Max(s => s.Y);
 
             actualMaxY = potencionalArea.BottomLeft.Y > actualMaxY ? potencionalArea.BottomLeft.Y : actualMaxY;
 
-            ldmRemain = (FloorArea.Y + FloorArea.Height) - actualMaxY;
+            ldmRemain = FloorArea.Y + FloorArea.Height - actualMaxY;
         }
 
         private bool TryAllRotations(Package package, Point PlacementPoint)
@@ -118,7 +118,7 @@ namespace _3DPack.Models
 
             if (package.Rotation != RotationType.Horizontal)
                 package.RotateToBeHorizontal();
-            
+
             if (CanPlacePackage(package, PlacementPoint))
                 return true;
 
@@ -162,12 +162,12 @@ namespace _3DPack.Models
 
         private void SortStartingPoints()
         {
-            StartingPoints = StartingPoints.OrderBy(p=>p.Y).ThenBy(p=>p.X).ToList();
+            StartingPoints = StartingPoints.OrderBy(p => p.Y).ThenBy(p => p.X).ToList();
         }
 
         private void RemoveStartingPoint(Point point)
         {
-            StartingPoints.RemoveAll(p=>p.X == point.X && p.Y==point.Y);
+            StartingPoints.RemoveAll(p => p.X == point.X && p.Y == point.Y);
         }
 
         private void AddPackage(Package package)

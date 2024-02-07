@@ -1,12 +1,9 @@
-﻿
-
-namespace _3DPack.Models
+﻿namespace _3DPack
 {
     public class Packager
     {
         List<Truck> Trucks { get; set; }
         List<Package> Packages { get; set; }
-        List<PackagerResult> Results { get; set; }
 
         public Packager()
         {
@@ -32,8 +29,8 @@ namespace _3DPack.Models
             List<Package> NotPacked = Packages.Select(p => p.Clone()).ToList();
             bool allPacked = false;
 
-            while (!allPacked) 
-            { 
+            while (!allPacked)
+            {
                 Truck winnerTruck = TryAllTrucks(NotPacked);
                 ResultsTrucks.Add(winnerTruck);
 
@@ -44,6 +41,7 @@ namespace _3DPack.Models
 
                 allPacked = !NotPacked.Any();
             }
+
             return ResultsTrucks;
         }
 
