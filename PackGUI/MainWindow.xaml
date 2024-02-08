@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:model="clr-namespace:_3DPack;assembly=3DPack"
         xmlns:local="clr-namespace:PackGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="900" Background="GhostWhite">
+        Title="MainWindow" Height="900" Width="1000" Background="GhostWhite">
     
     <Grid>
         <Grid.RowDefinitions>
@@ -73,12 +74,27 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Ready" Padding="5" Margin="5" Command="{Binding SetupTest}"/>
                     <Button x:Name="btnRun" Content="Run" Padding="5" Margin="5" Command="{Binding Run}"/>
                 </StackPanel>
 
 
-                <DataGrid Grid.Row="1" x:Name="dataGrid" ItemsSource="{Binding results}" AutoGenerateColumns="True"/>
+                <DataGrid Grid.Row="1" 
+                          x:Name="dataGrid" 
+                          ItemsSource="{Binding results}" 
+                          SelectedItem="{Binding selectedResult}"
+                          SelectionMode="Single"
+                          IsManipulationEnabled="False"
+                          AutoGenerateColumns="True">
+
+                    <DataGrid.InputBindings>
+                        
+                        <MouseBinding
+                            MouseAction="LeftDoubleClick"
+                            Command="{Binding SelectResult}"/>
+                        
+                    </DataGrid.InputBindings>
+
+                </DataGrid>
 
 
             </Grid>
@@ -87,8 +103,42 @@
 
 
         <Grid Grid.Row="2">
+
             <Canvas>
+                <Rectangle Width="100" Height="100" Stroke="Black"/>
+                <Rectangle Width="100" Height="100" Stroke="Black" Canvas.Top="100"/>
                 
+                <!--<ItemsControl ItemsSource="{Binding selectedResult.Trucks}" >
+                        --><!--<ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Background="white" Height="100"/>
+                            </ItemsPanelTemplate>--><!--
+                        </ItemsControl.ItemsPanel>--><!--
+
+
+                        <ItemsControl.ItemTemplate>
+
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+
+                                    <ItemsControl ItemsSource="{Binding Packages}" >
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Rectangle Width="{Binding Length}" 
+                                                           Height="{Binding Width}"
+                                                           
+                                                           Stroke="Black"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>-->
+                    
             </Canvas>
         </Grid>
        

@@ -7,9 +7,10 @@ namespace PackGUI.ViewModels
 {
     internal class MainViewModel : PrimeViewModel
     {
+        private PackagerResult _selectedResult;
         private Package _selectedPackage;
         private ObservableCollection<Package> _selectedPackages;
-        private ObservableCollection<Truck> _results;
+        private ObservableCollection<PackagerResult> _results;
 
         private List<Package> _availablePackages = new List<Package>()
         {
@@ -35,26 +36,35 @@ namespace PackGUI.ViewModels
 
         public Package selectedPackage { get => _selectedPackage; set => SetProperty(ref _selectedPackage, value); }
 
-        public ObservableCollection<Package> selectedPackages {  get => _selectedPackages; set => SetProperty(ref _selectedPackages, value); }
-        public ObservableCollection<Truck> results { get => _results; set => SetProperty(ref _results, value); }
+        public PackagerResult selectedResult { get => _selectedResult; set => SetProperty(ref _selectedResult, value); }
 
-        public ICommand SetupTest { get; private set; }
+        public ObservableCollection<Package> selectedPackages {  get => _selectedPackages; set => SetProperty(ref _selectedPackages, value); }
+        public ObservableCollection<PackagerResult> results { get => _results; set => SetProperty(ref _results, value); }
+
+
         public ICommand Run { get; private set; }
         public ICommand Insert { get; private set; }
         public ICommand InsertAll { get; private set; }
         public ICommand Remove { get; private set; }
+        public ICommand SelectResult { get; private set; }
 
 
         Packager Packager = new Packager();
 
         public MainViewModel() 
         {
-            SetupTest = new RelayCommand(SetupTestExecute);
             Run = new RelayCommand(RunExecute);
 
             Insert = new RelayCommand(InsertExecute);
             InsertAll = new RelayCommand(InsertAllExecute);
             Remove = new RelayCommand(RemoveExecute);
+            SelectResult = new RelayCommand(SelectResultHandler);
+        }
+
+        private void SelectResultHandler(object obj)
+        {
+            var plan = new Plan(selectedResult);
+            plan.Show();
         }
 
         private void RemoveExecute(object obj)
@@ -76,18 +86,17 @@ namespace PackGUI.ViewModels
             selectedPackages.Add(selectedPackage.Clone());
         }
 
-        private void SetupTestExecute(object obj)
+        private async void RunExecute(object obj)
         {
             Packager.Setup(
                 availableTrucks.Select(s => s.Clone()).ToList(),
                 selectedPackages.Select(s => s.Clone()).ToList()
                 );
-        }
 
-        private async void RunExecute(object obj)
-        {
-            results = new ObservableCollection<Truck>();
-            (await Packager.Pack()).ForEach(results.Add);
+            if (results == null)
+                results = new ObservableCollection<PackagerResult>();
+
+            results.Add(await Packager.Pack());
         }
     }
 }
