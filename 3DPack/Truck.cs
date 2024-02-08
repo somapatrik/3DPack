@@ -70,7 +70,7 @@ namespace _3DPack
                 }
             }
 
-            var winner = PotentionalPacking.OrderByDescending(p => p.RemainingLDM).FirstOrDefault();
+            var winner = PotentionalPacking.OrderByDescending(p => p.Package.LargerDimension).FirstOrDefault();
 
             if (winner != null)
             {
@@ -86,7 +86,7 @@ namespace _3DPack
         }
 
         /// <summary>
-        /// Tries to place package to truck
+        /// Tries to place 1 package to truck
         /// </summary>
         public bool InsertPackage(Package package)
         {
