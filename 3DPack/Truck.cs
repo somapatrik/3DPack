@@ -1,9 +1,13 @@
 ﻿using System.Drawing;
+using optimal2dx;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace _3DPack
 {
     public class Truck
     {
+        Optimization2DX optimization2DX = new Optimization2DX();
+
         public string Name { get; private set; }
         public int Width { get; set; }
         public int Height { get; set; }
@@ -39,6 +43,55 @@ namespace _3DPack
             };
 
             Packages = new List<Package>();
+        }
+
+        public void AreaOptimization(List<Package> packages)
+        {
+            //foreach (var floor in Floors.OrderByDescending(f=>f.LevelHeight))
+            //{
+            
+            optimization2DX.NumberOfRepositoryPieces = 1;
+            optimization2DX.SetRepositoryPiece(0, Floors[0].Length, Floors[0].Width, 0, 0, 0, 0, 0, 0, 0);
+            optimization2DX.OptimizationLevel = 50;
+
+            optimization2DX.NumberOfDemandPieces = packages.Count;
+            int index = 0;
+            foreach (var package in packages.Where(p=>p.Height <= Floors[0].Height))
+            {
+                optimization2DX.SetDemandPiece(index, package.Length, package.Width, 1, index, 0);
+                index++;
+            }
+
+            optimization2DX.OnFinish += Optimization2DX_OnFinish;
+
+            optimization2DX.BladeWidth = 0;
+            optimization2DX.RandomSeed = 1;
+            optimization2DX.StartGuillotine();
+
+            
+
+
+            //}
+        }
+
+        private void Optimization2DX_OnProgress()
+        {
+           // throw new NotImplementedException();
+        }
+
+        private void Optimization2DX_OnFinish()
+        {
+            int SheetIndex = 0; // this is the first sheet;
+
+            int top_x, top_y, bottom_x, bottom_y, thick;
+            int repository_Index, repository_ID, demand_Index, demand_ID, rotated;
+
+            int NumPieces;
+            optimization2DX.NumberOfUtilizedDemandPieces(SheetIndex, out NumPieces, out repository_Index, out repository_ID);
+            for (int i = 0; i < NumPieces; i++)
+            {
+                optimization2DX.GetUtilizedDemandPiece(SheetIndex, i, out top_x, out top_y, out bottom_x, out bottom_y, out rotated, out repository_Index, out demand_Index, out repository_ID, out demand_ID);
+            }
         }
 
         /// <summary>

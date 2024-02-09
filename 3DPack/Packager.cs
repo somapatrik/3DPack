@@ -22,6 +22,12 @@
            return await Run();
         }
 
+
+        public void TestRun()
+        {
+            Trucks[1].AreaOptimization(Packages.Select(p => p.Clone()).ToList());
+        }
+
         private Task<PackagerResult> Run()
         {
             var ResultsTrucks = new List<Truck>();
@@ -50,11 +56,12 @@
             List<Truck> availableTrucks = Trucks.Select(t => t.Clone()).ToList();
             List<Truck> checkedTrucks = new List<Truck>();
 
-            foreach (var truck in availableTrucks)
-            {
-                truck.StorePackages(packages.Select(p => p.Clone()).ToList());
-                checkedTrucks.Add(truck);
-            }
+            //foreach (var truck in availableTrucks)
+            //{
+            //truck.StorePackages(packages.Select(p => p.Clone()).ToList());
+            Trucks[0].AreaOptimization(packages.Select(p => p.Clone()).ToList());
+              //  checkedTrucks.Add(truck);
+            //}
 
             return checkedTrucks.OrderByDescending(t => t.UsedArea).ThenByDescending(p => p.Packages.Count).First();
         }

@@ -96,7 +96,8 @@ namespace PackGUI.ViewModels
             if (results == null)
                 results = new ObservableCollection<PackagerResult>();
 
-            results.Add(await Packager.Pack());
+            Packager.TestRun();
+            //results.Add(await Packager.Pack());
         }
     }
 }

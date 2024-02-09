@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2012.02.04 16:24:10.859,=C:\Mihai\OptimalPrograms\Automation\Deploy\2D\3803\cut2dx\Examples\Manual Arrange - After Optimization - Advanced Users\C++Builder XE\Unit2.cpp</Transaction>
+    <Transaction>2012.02.04 16:24:16.175,C:\Mihai\OptimalPrograms\Automation\Deploy\2D\3803\cut2dx\Examples\Manual Arrange - After Optimization - Advanced Users\C++Builder XE\utils.h=C:\Mihai\OptimalPrograms\Automation\Deploy\2D\3803\cut2dx\Examples\Manual Arrange - After Optimization - Advanced Users\C++Builder XE\Unit2.h</Transaction>
+    <Transaction>2012.02.04 16:24:16.175,C:\Mihai\OptimalPrograms\Automation\Deploy\2D\3803\cut2dx\Examples\Manual Arrange - After Optimization - Advanced Users\C++Builder XE\utils.cpp=C:\Mihai\OptimalPrograms\Automation\Deploy\2D\3803\cut2dx\Examples\Manual Arrange - After Optimization - Advanced Users\C++Builder XE\Unit2.cpp</Transaction>
+    <Transaction>2012.02.04 16:48:44.176,C:\Mihai\OptimalPrograms\Automation\Deploy\2D\3803\cut2dx\Examples\Manual Arrange - After Optimization - Advanced Users\C++Builder XE\manual.cbproj=C:\Mihai\OptimalPrograms\Automation\Deploy\2D\3803\cut2dx\Examples\Manual Arrange - After Optimization - Advanced Users\C++Builder XE\Project1.cbproj</Transaction>
+  </Transactions>
+</BorlandProject>
