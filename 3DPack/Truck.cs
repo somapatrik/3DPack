@@ -62,7 +62,20 @@ namespace _3DPack
                 index++;
             }
 
-            optimization2DX.OnFinish += Optimization2DX_OnFinish;
+           optimization2DX.OnFinish += () =>
+           {
+               int SheetIndex = 0; // this is the first sheet;
+
+               int top_x, top_y, bottom_x, bottom_y, thick;
+               int repository_Index, repository_ID, demand_Index, demand_ID, rotated;
+
+               int NumPieces;
+               optimization2DX.NumberOfUtilizedDemandPieces(SheetIndex, out NumPieces, out repository_Index, out repository_ID);
+               for (int i = 0; i < NumPieces; i++)
+               {
+                   optimization2DX.GetUtilizedDemandPiece(SheetIndex, i, out top_x, out top_y, out bottom_x, out bottom_y, out rotated, out repository_Index, out demand_Index, out repository_ID, out demand_ID);
+               }
+           };
 
             optimization2DX.BladeWidth = 0;
             optimization2DX.RandomSeed = 1;
