@@ -4,13 +4,14 @@ namespace _3DPack
 {
     public class Floor
     {
+        public int Id { get; private set; }
         public int Length { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int Area { get; private set; }
         public int AvailableArea { get; private set; }
         public int UsedArea { get; private set; }
-
+        public bool Full { get; set; }
         public Point OriginPoint { get; private set; }
         public int LevelHeight { get; private set; }
 
@@ -20,8 +21,10 @@ namespace _3DPack
         Rectangle FloorArea = new Rectangle();
         List<Point> StartingPoints = new List<Point>();
 
-        public Floor(int length, int width, int height, Point originPoint, int levelHeight)
+
+        public Floor(int length, int width, int height, Point originPoint, int levelHeight, int id = 0)
         {
+            Id = id;
             Height = height;
             Width = width;
             Length = length;
@@ -45,6 +48,9 @@ namespace _3DPack
             StartingPoints.Add(new Point(OriginPoint.X, OriginPoint.Y));
         }
 
+        /// <summary>
+        /// Will try to place a package if there is place for it. Rotation will be also tested.
+        /// </summary>
         public bool StorePackage(Package package, out Point PlacementPoint)
         {
             bool CanPlace = false;
@@ -69,6 +75,9 @@ namespace _3DPack
             return CanPlace;
         }
 
+        /// <summary>
+        /// Will try to place package and return some data about it
+        /// </summary>
         public bool CheckPackagePlacement(Package package, out Point PlacementPoint, out int ldmRemain)
         {
             bool CanPlace = false;
@@ -96,6 +105,9 @@ namespace _3DPack
             return CanPlace;
         }
 
+        /// <summary>
+        /// Will place a package without any checks
+        /// </summary>
         public void StorePackage(Package package, Point placementPoint)
         {
             PlacePackage(package, new Point(placementPoint.X, placementPoint.Y));

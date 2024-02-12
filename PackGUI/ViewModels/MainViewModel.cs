@@ -1,5 +1,4 @@
-﻿
-using _3DPack;
+﻿using _3DPack;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -14,6 +13,7 @@ namespace PackGUI.ViewModels
 
         private List<Package> _availablePackages = new List<Package>()
         {
+            Package.Create("TruckFloor", 240,1360,80,true),
                 Package.Create("Rack", 80, 400, 80, true),
                 Package.Create("Rack UPS", 100, 200, 125),
                 Package.Create("Blue box for IS doors till 2.4m", 120, 240, 110),

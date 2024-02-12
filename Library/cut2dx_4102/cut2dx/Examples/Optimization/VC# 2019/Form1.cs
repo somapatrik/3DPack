@@ -96,10 +96,10 @@ namespace Project2
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutForm af = new AboutForm();
-            if (af.ShowDialog() == DialogResult.OK)
-            {
-            }
+            //AboutForm af = new AboutForm();
+            //if (af.ShowDialog() == DialogResult.OK)
+            //{
+            //}
         }
 
         private void bStart_Click(object sender, EventArgs e)
@@ -107,26 +107,34 @@ namespace Project2
             bStart.Enabled = false;
 
             Optimization2DX1.NumberOfRepositoryPieces = 1;
-            Optimization2DX1.SetRepositoryPiece(0, 300, 200, 0, 0, 0, 0, 0, 0, 0);
+            Optimization2DX1.SetRepositoryPiece(0, 80, 400, 0, 0, 0, 0, 0, 0, 0);
+
             Optimization2DX1.BladeWidth = 0;
             Optimization2DX1.OptimizationLevel = 50;
             Optimization2DX1.RandomSeed = 1;
 
-            Optimization2DX1.NumberOfDemandPieces = 14;
-            Optimization2DX1.SetDemandPiece( 0,  60,  40, 1,  0, 0);
-            Optimization2DX1.SetDemandPiece( 1,  60,  40, 1,  1, 0);
-            Optimization2DX1.SetDemandPiece( 2,  48,  40, 1,  2, 0);
-            Optimization2DX1.SetDemandPiece( 3,  60,  53, 1,  3, 0);
-            Optimization2DX1.SetDemandPiece( 4,  45,  45, 1,  4, 0);
-            Optimization2DX1.SetDemandPiece( 5,  50,  80, 1,  5, 0);
-            Optimization2DX1.SetDemandPiece( 6,  45,  75, 1,  6, 0);
-            Optimization2DX1.SetDemandPiece( 7, 100, 100, 1,  7, 0);
-            Optimization2DX1.SetDemandPiece( 8, 100, 100, 1,  8, 0);
-            Optimization2DX1.SetDemandPiece( 9,  90,  90, 1,  9, 0);
-            Optimization2DX1.SetDemandPiece(10,  90,  90, 1, 10, 0);
-            Optimization2DX1.SetDemandPiece(11,  90,  90, 1, 11, 0);
-            Optimization2DX1.SetDemandPiece(12, 110, 110, 1, 12, 0);
-            Optimization2DX1.SetDemandPiece(13, 110, 110, 1, 13, 0);
+            Optimization2DX1.NumberOfDemandPieces = 8;
+            Optimization2DX1.SetDemandPiece(0, 400, 80, 1, 0, 0);
+            Optimization2DX1.SetDemandPiece(1, 400, 80, 1, 0, 0);
+            Optimization2DX1.SetDemandPiece(2, 400, 80, 1, 0, 0);
+            Optimization2DX1.SetDemandPiece(3, 400, 80, 1, 0, 0);
+            Optimization2DX1.SetDemandPiece(4, 400, 80, 1, 0, 0);
+            Optimization2DX1.SetDemandPiece(5, 400, 80, 1, 0, 0);
+            Optimization2DX1.SetDemandPiece(6, 400, 80, 1, 0, 0);
+            Optimization2DX1.SetDemandPiece(7, 400, 80, 1, 0, 0);
+            //Optimization2DX1.SetDemandPiece( 1,  60,  40, 1,  1, 0);
+            //Optimization2DX1.SetDemandPiece( 2,  48,  40, 1,  2, 0);
+            //Optimization2DX1.SetDemandPiece( 3,  60,  53, 1,  3, 0);
+            //Optimization2DX1.SetDemandPiece( 4,  45,  45, 1,  4, 0);
+            //Optimization2DX1.SetDemandPiece( 5,  50,  80, 1,  5, 0);
+            //Optimization2DX1.SetDemandPiece( 6,  45,  75, 1,  6, 0);
+            //Optimization2DX1.SetDemandPiece( 7, 100, 100, 1,  7, 0);
+            //Optimization2DX1.SetDemandPiece( 8, 100, 100, 1,  8, 0);
+            //Optimization2DX1.SetDemandPiece( 9,  90,  90, 1,  9, 0);
+            //Optimization2DX1.SetDemandPiece(10,  90,  90, 1, 10, 0);
+            //Optimization2DX1.SetDemandPiece(11,  90,  90, 1, 11, 0);
+            //Optimization2DX1.SetDemandPiece(12, 110, 110, 1, 12, 0);
+            //Optimization2DX1.SetDemandPiece(13, 110, 110, 1, 13, 0);
 
             iteration = 0;
 
