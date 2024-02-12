@@ -22,30 +22,21 @@
            return await Run();
         }
 
-
-        public void TestRun()
-        {
-            Trucks[1].AreaOptimization(Packages.Select(p => p.Clone()).ToList());
-        }
-
         private Task<PackagerResult> Run()
         {
             var ResultsTrucks = new List<Truck>();
 
-            List<Package> NotPacked = Packages.Select(p => p.Clone()).ToList();
+            List<Package> notPacked = Packages.Select(p => p.Clone()).ToList();
             bool allPacked = false;
 
             while (!allPacked)
             {
-                Truck winnerTruck = TryAllTrucks(NotPacked);
+                Truck winnerTruck = TryAllTrucks(notPacked);
+                
+                notPacked = winnerTruck.CopyUnpacked();
                 ResultsTrucks.Add(winnerTruck);
 
-                winnerTruck.Packages.ForEach(stored =>
-                {
-                    NotPacked.RemoveAll(r => r.Id == stored.Id);
-                });
-
-                allPacked = !NotPacked.Any();
+                allPacked = !notPacked.Any();
             }
 
             return Task.FromResult(new PackagerResult() { Trucks = ResultsTrucks });
@@ -56,14 +47,13 @@
             List<Truck> availableTrucks = Trucks.Select(t => t.Clone()).ToList();
             List<Truck> checkedTrucks = new List<Truck>();
 
-            //foreach (var truck in availableTrucks)
-            //{
-            //truck.StorePackages(packages.Select(p => p.Clone()).ToList());
-            Trucks[0].AreaOptimization(packages.Select(p => p.Clone()).ToList());
-              //  checkedTrucks.Add(truck);
-            //}
+            foreach (var truck in availableTrucks)
+            {
+                truck.AreaOptimization(packages.Select(p => p.Clone()).ToList());
+                checkedTrucks.Add(truck);
+            }
 
-            return checkedTrucks.OrderByDescending(t => t.UsedArea).ThenByDescending(p => p.Packages.Count).First();
+            return checkedTrucks.OrderByDescending(t => t.UsedArea).ThenByDescending(p => p.Packed.Count).First();
         }
 
     }

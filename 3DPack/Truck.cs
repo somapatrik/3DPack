@@ -1,22 +1,17 @@
 ﻿using System.Drawing;
-using System.Reflection;
 using optimal2dx;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace _3DPack
 {
     public class Truck
     {
         public string Name { get; private set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int Length { get; set; }
-        public List<Floor> Floors { get; set; }
-        private List<Package> toPack { get; set; }
-        public List<Package> Packages { get; private set; }
-
-        private Optimization2DX optimization2DX { get; set; }
-
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public int Length { get; private set; }
+        public List<Floor> Floors { get; private set; }
+        public List<Package> Unpacked { get; private set; }
+        public List<Package> Packed { get; private set; }
         public int UsedArea
         {
             get
@@ -25,8 +20,8 @@ namespace _3DPack
             }
         }
 
-        private bool finishedOpt = false;
-        private TaskCompletionSource<bool> _tcs;
+        private TaskCompletionSource<bool> _finishedOpt;
+        private Optimization2DX _optimization2DX;
 
         public static Truck Create(string name, int length, int width, int height)
         {
@@ -37,6 +32,7 @@ namespace _3DPack
 
         public Truck(int length, int width, int height)
         {
+            Name = "";
             Width = width;
             Height = height;
             Length = length;
@@ -46,10 +42,15 @@ namespace _3DPack
                 new Floor(length, width, height, new Point(0,0), 0)
             };
 
-            Packages = new List<Package>();
+            Packed = new List<Package>();
+            Unpacked = new List<Package>();
 
-            optimization2DX = new Optimization2DX();
-            optimization2DX.OnFinish += Optimization2DX_OnFinish;
+            _optimization2DX = new Optimization2DX();
+            _optimization2DX.OnFinish += Optimization2DX_OnFinish;
+
+            _optimization2DX.BladeWidth = 0;
+            _optimization2DX.RandomSeed = 1;
+            _optimization2DX.OptimizationLevel = 50;
         }
 
         private void Optimization2DX_OnFinish()
@@ -60,49 +61,50 @@ namespace _3DPack
             int repository_Index, repository_ID, demand_Index, demand_ID, rotated;
 
             double surf_covered;
-            optimization2DX.SurfaceCovered(SheetIndex, out surf_covered, out repository_Index, out repository_ID);
+            _optimization2DX.SurfaceCovered(SheetIndex, out surf_covered, out repository_Index, out repository_ID);
             
             int NumPieces;
-            optimization2DX.NumberOfUtilizedDemandPieces(SheetIndex, out NumPieces, out repository_Index, out repository_ID);
+            _optimization2DX.NumberOfUtilizedDemandPieces(SheetIndex, out NumPieces, out repository_Index, out repository_ID);
             for (int i = 0; i < NumPieces; i++)
             {
-                optimization2DX.GetUtilizedDemandPiece(SheetIndex, i, out top_x, out top_y, out bottom_x, out bottom_y, out rotated, out repository_Index, out demand_Index, out repository_ID, out demand_ID);
+                _optimization2DX.GetUtilizedDemandPiece(SheetIndex, i, out top_x, out top_y, out bottom_x, out bottom_y, out rotated, out repository_Index, out demand_Index, out repository_ID, out demand_ID);
                 StoreOptimizidedPackage(demand_ID, repository_ID, top_x, top_y, bottom_x, bottom_y);
             }
 
-            _tcs.SetResult(true);
+            _finishedOpt.SetResult(true);
         }
 
-        public async void AreaOptimization(List<Package> packages, int floorId = 0)
+        public async void AreaOptimization(List<Package> toPack, int floorId = 0)
         {
-            toPack = new List<Package>();
-            toPack = packages.Select(p => p.Clone()).ToList();
+            Unpacked = toPack.Select(p => p.Clone()).ToList();
+
             var floor = Floors.FirstOrDefault(f => f.Id == floorId);
           
             if (floor != null)
             {
-                //optimization2DX = new Optimization2DX();
-                optimization2DX.BladeWidth = 0;
-                optimization2DX.RandomSeed = 1;
-                optimization2DX.OptimizationLevel = 50;
-
                 // Set floor repository
-                optimization2DX.NumberOfRepositoryPieces = 1;
-                optimization2DX.SetRepositoryPiece(0, floor.Length, floor.Width, 0, 0, 0, 0, floor.Id, 0, 0);
-                optimization2DX.NumberOfDemandPieces = toPack.Count;
+                _optimization2DX.NumberOfRepositoryPieces = 1;
+                _optimization2DX.SetRepositoryPiece(0, floor.Length, floor.Width, 0, 0, 0, 0, floor.Id, 0, 0);
+                _optimization2DX.NumberOfDemandPieces = Unpacked.Count;
 
                 // Set packages
                 int index = 0;
-                foreach (var package in toPack.Where(p=>p.Height <= floor.Height))
-                {
-                    package.SetCutId(index);
-                    optimization2DX.SetDemandPiece(index, package.Length, package.Width, 1, package.Cut_Id, 0);
-                    index++;
-                }
+                var packagesToPack = Unpacked.Where(p => p.Height <= floor.Height);
 
-                _tcs = new TaskCompletionSource<bool>();
-                optimization2DX.StartGuillotine();
-                await _tcs.Task;
+                if (packagesToPack.Any())
+                {
+                    _optimization2DX.NumberOfDemandPieces = packagesToPack.Count();
+                    foreach (var package in packagesToPack)
+                    {
+                        package.SetCutId(index);
+                        _optimization2DX.SetDemandPiece(index, package.Length, package.Width, 1, package.Cut_Id, 0);
+                        index++;
+                    }
+
+                    _finishedOpt = new TaskCompletionSource<bool>();
+                    _optimization2DX.StartGuillotine();
+                    await _finishedOpt.Task;
+                }
 
                 FinishFloor(ref floor);
            }
@@ -110,7 +112,7 @@ namespace _3DPack
 
         private void StoreOptimizidedPackage(int packageCutId, int floorId, int topX, int topY, int bottomX, int bottomY)
         {
-            var package = toPack.FirstOrDefault(p=>p.Cut_Id == packageCutId);
+            var package = Unpacked.FirstOrDefault(p=>p.Cut_Id == packageCutId);
             var floor = Floors.FirstOrDefault(f=>f.Id == floorId);
 
             if (package != null && floor != null)
@@ -130,8 +132,8 @@ namespace _3DPack
                 if (package.Stackable)
                     CreateNewFloor(floor.LevelHeight, placementPoint, package);
 
-                toPack.Remove(package);
-                Packages.Add(package);
+                Unpacked.Remove(package);
+                Packed.Add(package);
             }
 
 
@@ -143,9 +145,9 @@ namespace _3DPack
 
             var availableFloors = Floors.Where(f => f.Full == false);
             
-            if (toPack.Any() && availableFloors.Any())
+            if (Unpacked.Any() && availableFloors.Any())
             {
-                AreaOptimization(toPack, availableFloors.OrderByDescending(f => f.LevelHeight).First().Id);
+                AreaOptimization(Unpacked, availableFloors.OrderByDescending(f => f.LevelHeight).First().Id);
             }
 
         }
@@ -188,7 +190,7 @@ namespace _3DPack
                 if (winner.Package.Stackable)
                     CreateNewFloor(winner.Floor.LevelHeight, winner.PlacementPoint, winner.Package);
 
-                Packages.Add(winner.Package);
+                Packed.Add(winner.Package);
                 packages.Remove(winner.Package);
                 StorePackages(packages);
             }
@@ -215,26 +217,12 @@ namespace _3DPack
                 // Done
                 if (stored)
                 {
-                    Packages.Add(package);
+                    Packed.Add(package);
                     break;
                 }
             }
 
             return stored;
-        }
-        private bool IsPackageSameAsFloor(ref Package pack, ref Floor floor)
-        {
-            // Yeah...this is what I do now....
-
-            bool result = false;
-
-            if (pack.Length == floor.Width && pack.Width == floor.Length)
-                return true;
-
-            if (pack.Length == floor.Length && pack.Width == floor.Width)
-                return true;
-
-            return result;
         }
         private void CreateNewFloor(int startHeight, Point placementPoint, Package onPackage)
         {
@@ -260,6 +248,10 @@ namespace _3DPack
         public Truck Clone()
         {
             return Create(Name, Length, Width, Height);
+        }
+        public List<Package> CopyUnpacked()
+        {
+            return Unpacked.Select(u=>u.Clone()).ToList();
         }
     }
 
