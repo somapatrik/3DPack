@@ -5,19 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PackGUI"
         mc:Ignorable="d"
-        Title="Plan" Height="450" Width="800">
+        Title="Plan" Height="450" Width="800" PreviewKeyDown="Grid_KeyDown">
+
+
     <Grid>
-        <ItemsControl ItemsSource="{Binding selectedResult.Trucks}" >
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas Background="white" Width="1000" Height="500" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Rectangle Width="{Binding Length}" Height="{Binding Width}" Stroke="black"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <Viewport3D x:Name="myViewport">
+ 
+        </Viewport3D>
     </Grid>
 </Window>

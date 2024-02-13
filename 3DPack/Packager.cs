@@ -17,12 +17,12 @@
             Packages = packages;
         }
 
-        public async Task<PackagerResult> Pack()
+        public async Task<List<Truck>> Pack()
         {
            return await Run();
         }
 
-        private Task<PackagerResult> Run()
+        private Task<List<Truck>> Run()
         {
             var ResultsTrucks = new List<Truck>();
 
@@ -39,7 +39,7 @@
                 allPacked = !notPacked.Any();
             }
 
-            return Task.FromResult(new PackagerResult() { Trucks = ResultsTrucks });
+            return Task.FromResult(ResultsTrucks);
         }
 
         private Truck TryAllTrucks(List<Package> packages)

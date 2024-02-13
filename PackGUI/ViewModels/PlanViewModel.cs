@@ -1,16 +1,20 @@
 ﻿using _3DPack;
+using PackGUI.Models;
+using System.Collections.ObjectModel;
 
 namespace PackGUI.ViewModels
 {
     internal class PlanViewModel : PrimeViewModel
     {
-        private PackagerResult _selectedResult;
+        private ObservableCollection<TruckDeckModel> _decks;
 
-        public PackagerResult selectedResult { get => _selectedResult; set => SetProperty(ref _selectedResult, value); }
+        public ObservableCollection<TruckDeckModel> Decks { get => _decks; set => SetProperty(ref _decks, value); }
 
-        public PlanViewModel(PackagerResult result) 
+
+        public PlanViewModel(List<TruckDeckModel> decks)
         {
-            selectedResult = result;
+            Decks = new ObservableCollection<TruckDeckModel>();
+            decks.ForEach(Decks.Add);
         }
     }
 }

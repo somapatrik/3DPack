@@ -6,13 +6,13 @@
         xmlns:model="clr-namespace:_3DPack;assembly=3DPack"
         xmlns:local="clr-namespace:PackGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1000" Background="GhostWhite">
+        Title="MainWindow" Height="500" Width="1000" Background="GhostWhite">
     
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid Margin="0,10">
@@ -71,42 +71,11 @@
 
 
         <Grid Grid.Row="2">
-
-            <Canvas>
-
-                <!--<ItemsControl ItemsSource="{Binding selectedResult.Trucks}" >
-                        --><!--<ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <Canvas Background="white" Height="100"/>
-                            </ItemsPanelTemplate>--><!--
-                        </ItemsControl.ItemsPanel>--><!--
-
-
-                        <ItemsControl.ItemTemplate>
-
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-
-                                    <ItemsControl ItemsSource="{Binding Packages}" >
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Rectangle Width="{Binding Length}" 
-                                                           Height="{Binding Width}"
-                                                           
-                                                           Stroke="Black"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-
-                                </StackPanel>
-
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-
-                    </ItemsControl>-->
-                    
-            </Canvas>
+            <StackPanel HorizontalAlignment="Center">
+                <Button Content="Run" Command="{Binding Run}" Padding="5"/>
+            </StackPanel>
         </Grid>
+        
        
         
     </Grid>

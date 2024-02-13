@@ -1,4 +1,5 @@
 ﻿using _3DPack;
+using PackGUI.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -6,11 +7,9 @@ namespace PackGUI.ViewModels
 {
     internal class MainViewModel : PrimeViewModel
     {
-        private PackagerResult _selectedResult;
-        private PackagerResult _result;
+        private PackResult _result;
         private Package _selectedPackage;
         private ObservableCollection<Package> _selectedPackages;
-        private ObservableCollection<PackagerResult> _results;
 
         private List<Package> _availablePackages = new List<Package>()
         {
@@ -35,13 +34,8 @@ namespace PackGUI.ViewModels
         public List<Truck> availableTrucks => _availableTrucks;
 
         public Package selectedPackage { get => _selectedPackage; set => SetProperty(ref _selectedPackage, value); }
-
-        public PackagerResult selectedResult { get => _selectedResult; set => SetProperty(ref _selectedResult, value); }
-
-        public ObservableCollection<Package> selectedPackages {  get => _selectedPackages; set => SetProperty(ref _selectedPackages, value); }
-        public ObservableCollection<PackagerResult> results { get => _results; set => SetProperty(ref _results, value); }
-
-        public PackagerResult result { get => _result; set => SetProperty(ref _result, value); }
+        public ObservableCollection<Package> selectedPackages { get => _selectedPackages; set => SetProperty(ref _selectedPackages, value); }
+        public PackResult result { get => _result; set => SetProperty(ref _result, value); }
 
 
         public ICommand Run { get; private set; }
@@ -61,12 +55,15 @@ namespace PackGUI.ViewModels
             InsertAll = new RelayCommand(InsertAllExecute);
             Remove = new RelayCommand(RemoveExecute);
             SelectResult = new RelayCommand(SelectResultHandler);
+
+            InsertAllExecute(null);
+            RunExecute(null);
         }
 
         private void SelectResultHandler(object obj)
         {
-            var plan = new Plan(selectedResult);
-            plan.Show();
+            //var plan = new Plan(selectedResult);
+           // plan.Show();
         }
 
         private void RemoveExecute(object obj)
@@ -95,7 +92,13 @@ namespace PackGUI.ViewModels
                 selectedPackages.Select(s => s.Clone()).ToList()
                 );
 
-            result = await Packager.Pack();
+            List<TruckDeckModel> decks = new List<TruckDeckModel>();
+            var trucks = await Packager.Pack();
+
+            trucks.ForEach(t=>decks.Add(new TruckDeckModel(t.Floors[0].OriginPoint, t.Length, t.Width, t.Height)));
+
+            Plan plan = new Plan(decks);
+            plan.Show();
         }
     }
 }
