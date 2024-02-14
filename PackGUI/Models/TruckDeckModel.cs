@@ -7,6 +7,8 @@ namespace PackGUI.Models
     public class TruckDeckModel
     {
         public ModelVisual3D VisualModel {  get; set; }
+
+        public List<ModelVisual3D> PackageModels { get; set; }
         public GeometryModel3D GeometryModel { get; set; } 
 
         private MeshGeometry3D _geometry3D; 
@@ -16,20 +18,30 @@ namespace PackGUI.Models
         public TruckDeckModel(Point origin, int length, int width, int height) 
         {
             _geometry3D = new MeshGeometry3D();
+            PackageModels = new List<ModelVisual3D>();
+
+            int backZ = origin.Y;
+            int frontZ = origin.Y + width;
+
+            int deckLevelY = 0;
+            int deckBottomLevelY = deckLevelY - _deckThicknes;
+
+            int leftSideX = origin.X;
+            int rightSideX = origin.X + length;
 
             List<Point3D> vertices = new List<Point3D>()
             {
                 // Back-side
-                new Point3D(origin.X, -_deckThicknes, origin.Y),               // 0
-                new Point3D(origin.X + length, -_deckThicknes, origin.Y),      // 1
-                new Point3D(origin.X + length, 0, origin.Y),                   // 2
-                new Point3D(origin.X, 0, origin.Y),                            // 3
+                new Point3D(leftSideX, deckBottomLevelY, backZ),       // 0
+                new Point3D(rightSideX, deckBottomLevelY, backZ),      // 1
+                new Point3D(rightSideX, deckLevelY, backZ),            // 2
+                new Point3D(leftSideX, deckLevelY, backZ),             // 3
 
                 // Front-side
-                new Point3D(origin.X, -_deckThicknes, origin.Y + width),               // 4
-                new Point3D(origin.X + length, -_deckThicknes, origin.Y + width),      // 5
-                new Point3D(origin.X + length, 0, origin.Y + width),                   // 6
-                new Point3D(origin.X, 0, origin.Y + width),                            // 7
+                new Point3D(leftSideX, deckBottomLevelY, frontZ),      // 4
+                new Point3D(rightSideX, deckBottomLevelY, frontZ),     // 5
+                new Point3D(rightSideX, deckLevelY, frontZ),           // 6
+                new Point3D(leftSideX, deckLevelY, frontZ),            // 7
 
             };
 
@@ -89,20 +101,7 @@ namespace PackGUI.Models
             _geometry3D.TriangleIndices.Add(6);
             _geometry3D.TriangleIndices.Add(7);
 
-            //for (int i = 0; i < vertices.Count; i++)
-            //{
-            //    Point3D vertex = vertices[i];
-
-            //    // Normály pro každý vrchol
-            //    Vector3D normal = CalculateVertexNormal(_geometry3D, vertex);
-            //    normal.Normalize(); // Normalizace na jednotkovou délku
-
-            //    // Přidání normály pro každý vrchol
-            //    _geometry3D.Normals.Add(normal);
-            //}
-
-
-            SolidColorBrush materialBrush = new SolidColorBrush(Colors.Green);
+            SolidColorBrush materialBrush = new SolidColorBrush(Colors.Gray);
             DiffuseMaterial material = new DiffuseMaterial(materialBrush);
 
             GeometryModel = new GeometryModel3D(_geometry3D, material);
@@ -110,33 +109,99 @@ namespace PackGUI.Models
             VisualModel.Content = GeometryModel;
         }
 
-        // Metoda pro výpočet normály vrcholu na základě průměru normál přilehlých stěn
-        private Vector3D CalculateVertexNormal(MeshGeometry3D meshGeometry, Point3D vertex)
+        internal void AddPackage(Point packageOrigin, int levelHeight, int length, int width, int height)
         {
-            Vector3D normalSum = new Vector3D();
-            int faceCount = 0;
+            MeshGeometry3D packageModel = new MeshGeometry3D();
 
-            for (int i = 0; i < meshGeometry.TriangleIndices.Count; i += 3)
+            int backZ = packageOrigin.Y;
+            int frontZ = packageOrigin.Y + width;
+
+            int topY = levelHeight + height;
+            int bottomY = levelHeight;
+
+            int leftSideX = packageOrigin.X;
+            int rightSideX = packageOrigin.X + length;
+
+            List<Point3D> vertices = new List<Point3D>()
             {
-                int index1 = meshGeometry.TriangleIndices[i];
-                int index2 = meshGeometry.TriangleIndices[i + 1];
-                int index3 = meshGeometry.TriangleIndices[i + 2];
+                // Back-side
+                new Point3D(leftSideX, bottomY, backZ),       // 0
+                new Point3D(rightSideX, bottomY, backZ),      // 1
+                new Point3D(rightSideX, topY, backZ),         // 2
+                new Point3D(leftSideX, topY, backZ),          // 3
 
-                if (meshGeometry.Positions[index1] == vertex ||
-                    meshGeometry.Positions[index2] == vertex ||
-                    meshGeometry.Positions[index3] == vertex)
-                {
-                    Vector3D side1 = meshGeometry.Positions[index2] - meshGeometry.Positions[index1];
-                    Vector3D side2 = meshGeometry.Positions[index3] - meshGeometry.Positions[index1];
-                    Vector3D faceNormal = Vector3D.CrossProduct(side1, side2);
-                    faceNormal.Normalize();
+                // Front-side
+                new Point3D(leftSideX, bottomY, frontZ),       // 4
+                new Point3D(rightSideX, bottomY, frontZ),      // 5
+                new Point3D(rightSideX, topY, frontZ),         // 6
+                new Point3D(leftSideX, topY, frontZ),          // 7
 
-                    normalSum += faceNormal;
-                    faceCount++;
-                }
-            }
+            };
 
-            return normalSum / faceCount;
+            vertices.ForEach(packageModel.Positions.Add);
+
+            // Back
+            packageModel.TriangleIndices.Add(0);
+            packageModel.TriangleIndices.Add(3);
+            packageModel.TriangleIndices.Add(2);
+
+            packageModel.TriangleIndices.Add(1);
+            packageModel.TriangleIndices.Add(0);
+            packageModel.TriangleIndices.Add(2);
+
+            // Right
+            packageModel.TriangleIndices.Add(1);
+            packageModel.TriangleIndices.Add(2);
+            packageModel.TriangleIndices.Add(6);
+
+            packageModel.TriangleIndices.Add(5);
+            packageModel.TriangleIndices.Add(1);
+            packageModel.TriangleIndices.Add(6);
+
+            // Left
+            packageModel.TriangleIndices.Add(0);
+            packageModel.TriangleIndices.Add(4);
+            packageModel.TriangleIndices.Add(7);
+
+            packageModel.TriangleIndices.Add(3);
+            packageModel.TriangleIndices.Add(0);
+            packageModel.TriangleIndices.Add(7);
+
+            // Bottom
+            packageModel.TriangleIndices.Add(0);
+            packageModel.TriangleIndices.Add(1);
+            packageModel.TriangleIndices.Add(4);
+
+            packageModel.TriangleIndices.Add(1);
+            packageModel.TriangleIndices.Add(5);
+            packageModel.TriangleIndices.Add(4);
+
+            // Top
+            packageModel.TriangleIndices.Add(7);
+            packageModel.TriangleIndices.Add(6);
+            packageModel.TriangleIndices.Add(3);
+
+            packageModel.TriangleIndices.Add(2);
+            packageModel.TriangleIndices.Add(3);
+            packageModel.TriangleIndices.Add(6);
+
+            // Front
+            packageModel.TriangleIndices.Add(4);
+            packageModel.TriangleIndices.Add(5);
+            packageModel.TriangleIndices.Add(7);
+
+            packageModel.TriangleIndices.Add(5);
+            packageModel.TriangleIndices.Add(6);
+            packageModel.TriangleIndices.Add(7);
+
+            Random r = new Random();
+            Brush brush = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255,(byte)r.Next(1, 255), (byte)r.Next(1, 255), (byte)r.Next(1, 233)));
+
+            //SolidColorBrush materialBrush = new SolidColorBrush(brush);
+            DiffuseMaterial material = new DiffuseMaterial(brush);
+            GeometryModel3D geometry = new GeometryModel3D(packageModel, material);
+
+            PackageModels.Add(new ModelVisual3D() { Content = geometry });
         }
 
     }

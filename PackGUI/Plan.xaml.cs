@@ -27,23 +27,25 @@ namespace PackGUI
             camera.FieldOfView = 60;
 
             myViewport.Camera = camera;
+            Model3DGroup group = new Model3DGroup();
 
             AmbientLight myPointLight = new AmbientLight();
             myPointLight.Color = Colors.White;
             //myPointLight.Position = new Point3D(0, 10, 0);
             
-            
-
-            Model3DGroup group = new Model3DGroup();
 
             group.Children.Add(myPointLight);
             ModelVisual3D visual = new ModelVisual3D();
             visual.Content = group;
             myViewport.Children.Add(visual);
 
+           // decks.Select(d=>d.VisualModel).ToList().ForEach(myViewport.Children.Add);
 
-
-            decks.Select(d=>d.VisualModel).ToList().ForEach(myViewport.Children.Add);
+            decks.ForEach(deck =>
+            {
+                myViewport.Children.Add(deck.VisualModel);
+                deck.PackageModels.ForEach(myViewport.Children.Add);
+            });
         }
 
         private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

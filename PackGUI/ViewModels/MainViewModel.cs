@@ -1,6 +1,7 @@
 ﻿using _3DPack;
 using PackGUI.Models;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows.Input;
 
 namespace PackGUI.ViewModels
@@ -95,7 +96,31 @@ namespace PackGUI.ViewModels
             List<TruckDeckModel> decks = new List<TruckDeckModel>();
             var trucks = await Packager.Pack();
 
-            trucks.ForEach(t=>decks.Add(new TruckDeckModel(t.Floors[0].OriginPoint, t.Length, t.Width, t.Height)));
+            trucks.ForEach(truck => 
+            {
+                var baseFloor = truck.Floors.First(f=>f.LevelHeight == 0);
+                var deck = new TruckDeckModel(baseFloor.OriginPoint, truck.Length, truck.Width, truck.Height);
+
+                truck.Floors.ForEach(floor =>
+                {
+                    Point floorOrigin = floor.OriginPoint;
+                    //int floorOriginHeight = floor.LevelHeight;
+
+                    floor.BlockedAreas.ForEach(area => 
+                    {
+                        var package = floor.Packages.FirstOrDefault(p=>p.Id == area.CockBlockedByPackage);
+                        if (package != null)
+                        {
+                            Point packageOrigin = new Point(floorOrigin.X + area.Area.X, floorOrigin.Y + area.Area.Y);
+                            deck.AddPackage(packageOrigin, floor.LevelHeight,package.Length, package.Width, package.Height);
+                        }
+                    });
+                    
+                });
+
+                decks.Add(deck);
+
+            });
 
             Plan plan = new Plan(decks);
             plan.Show();

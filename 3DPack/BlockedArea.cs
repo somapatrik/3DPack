@@ -2,7 +2,7 @@
 
 namespace _3DPack
 {
-    internal class BlockedArea
+    public class BlockedArea
     {
         public Rectangle Area { get; }
 
@@ -11,7 +11,9 @@ namespace _3DPack
         public Point BottomRight { get; }
         public Point BottomLeft { get; }
 
-        public BlockedArea(Point startingPoint, int length, int width)
+        public Guid CockBlockedByPackage { get; }
+
+        public BlockedArea(Point startingPoint, int length, int width, Guid packageId)
         {
             Area = new Rectangle(startingPoint.X, startingPoint.Y, length, width);
 
@@ -19,6 +21,8 @@ namespace _3DPack
             TopRight = new Point(startingPoint.X + length, startingPoint.Y);
             BottomLeft = new Point(startingPoint.X, startingPoint.Y + width);
             BottomRight = new Point(startingPoint.X + length, startingPoint.Y + width);
+
+            CockBlockedByPackage = packageId;
         }
 
         public bool IsPackageColliding(Package package, Point fromPoint)

@@ -8,7 +8,7 @@
         Title="Plan" Height="450" Width="800" PreviewKeyDown="Grid_KeyDown">
 
 
-    <Grid>
+    <Grid Background="LightBlue">
         <Viewport3D x:Name="myViewport">
  
         </Viewport3D>

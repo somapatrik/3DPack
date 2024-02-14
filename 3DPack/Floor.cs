@@ -15,8 +15,9 @@ namespace _3DPack
         public Point OriginPoint { get; private set; }
         public int LevelHeight { get; private set; }
 
-        List<Package> Packages = new List<Package>();
-        List<BlockedArea> BlockedAreas = new List<BlockedArea>();
+        public List<Package> Packages = new List<Package>();
+
+        public List<BlockedArea> BlockedAreas = new List<BlockedArea>();
 
         Rectangle FloorArea = new Rectangle();
         List<Point> StartingPoints = new List<Point>();
@@ -115,7 +116,7 @@ namespace _3DPack
 
         private void AnalyzePlacement(Package package, Point PlacementPoint, out int ldmRemain)
         {
-            BlockedArea potencionalArea = new BlockedArea(PlacementPoint, package.Length, package.Width);
+            BlockedArea potencionalArea = new BlockedArea(PlacementPoint, package.Length, package.Width, package.Id);
             int actualMaxY = StartingPoints.Max(s => s.Y);
 
             actualMaxY = potencionalArea.BottomLeft.Y > actualMaxY ? potencionalArea.BottomLeft.Y : actualMaxY;
@@ -189,7 +190,7 @@ namespace _3DPack
 
         private void AddBlockedArea(Package package, Point placementPoint)
         {
-            BlockedArea blocked = new BlockedArea(placementPoint, package.Length, package.Width);
+            BlockedArea blocked = new BlockedArea(placementPoint, package.Length, package.Width, package.Id);
             BlockedAreas.Add(blocked);
 
             Point topRight = blocked.TopRight;
