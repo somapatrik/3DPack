@@ -33,7 +33,7 @@
         </Grid>
 
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
         
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -70,7 +70,7 @@
         </Grid>
 
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1">
             <StackPanel HorizontalAlignment="Center">
                 <Button Content="Run" Command="{Binding Run}" Padding="5"/>
             </StackPanel>

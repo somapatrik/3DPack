@@ -52,27 +52,27 @@ namespace PackGUI
         {
             if (e.Key == Key.D)
             {
-                Rotate(100);
+                Rotate(200);
             }
             else if (e.Key == Key.A)
             {
-                Rotate(-100);
+                Rotate(-200);
             }
             else if (e.Key == Key.S)
             {
-                Move(-200);
+                Move(-400);
             }
             else if (e.Key == Key.W)
             {
-                Move(200);
+                Move(400);
             }
             else if (e.Key == Key.NumPad8)
             {
-                RotateVertical(100);
+                RotateVertical(200);
             }
             else if (e.Key == Key.NumPad2)
             {
-                RotateVertical(-100);
+                RotateVertical(-200);
             }
 
         }

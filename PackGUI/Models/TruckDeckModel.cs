@@ -15,19 +15,19 @@ namespace PackGUI.Models
 
         private int _deckThicknes = 10;
 
-        public TruckDeckModel(Point origin, int length, int width, int height) 
+        public TruckDeckModel(int originX, int originY, int length, int width, int height) 
         {
             _geometry3D = new MeshGeometry3D();
             PackageModels = new List<ModelVisual3D>();
 
-            int backZ = origin.Y;
-            int frontZ = origin.Y + width;
+            int backZ = originY;
+            int frontZ = originY + width;
 
             int deckLevelY = 0;
             int deckBottomLevelY = deckLevelY - _deckThicknes;
 
-            int leftSideX = origin.X;
-            int rightSideX = origin.X + length;
+            int leftSideX = originX;
+            int rightSideX = originX + length;
 
             List<Point3D> vertices = new List<Point3D>()
             {
@@ -109,18 +109,18 @@ namespace PackGUI.Models
             VisualModel.Content = GeometryModel;
         }
 
-        internal void AddPackage(Point packageOrigin, int levelHeight, int length, int width, int height)
+        internal void AddPackage(int packageOriginX, int packageOriginY, int levelHeight, int length, int width, int height)
         {
             MeshGeometry3D packageModel = new MeshGeometry3D();
 
-            int backZ = packageOrigin.Y;
-            int frontZ = packageOrigin.Y + width;
+            int backZ = packageOriginY;
+            int frontZ = packageOriginY + width;
 
             int topY = levelHeight + height;
             int bottomY = levelHeight;
 
-            int leftSideX = packageOrigin.X;
-            int rightSideX = packageOrigin.X + length;
+            int leftSideX = packageOriginX;
+            int rightSideX = packageOriginX + length;
 
             List<Point3D> vertices = new List<Point3D>()
             {

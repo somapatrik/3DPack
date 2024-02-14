@@ -57,8 +57,8 @@ namespace PackGUI.ViewModels
             Remove = new RelayCommand(RemoveExecute);
             SelectResult = new RelayCommand(SelectResultHandler);
 
-            InsertAllExecute(null);
-            RunExecute(null);
+           // InsertAllExecute(null);
+           // RunExecute(null);
         }
 
         private void SelectResultHandler(object obj)
@@ -96,10 +96,12 @@ namespace PackGUI.ViewModels
             List<TruckDeckModel> decks = new List<TruckDeckModel>();
             var trucks = await Packager.Pack();
 
+            int truckOffsetY = 0;
+
             trucks.ForEach(truck => 
             {
                 var baseFloor = truck.Floors.First(f=>f.LevelHeight == 0);
-                var deck = new TruckDeckModel(baseFloor.OriginPoint, truck.Length, truck.Width, truck.Height);
+                var deck = new TruckDeckModel(baseFloor.OriginPoint.X, baseFloor.OriginPoint.Y + truckOffsetY, truck.Length, truck.Width, truck.Height);
 
                 truck.Floors.ForEach(floor =>
                 {
@@ -112,13 +114,14 @@ namespace PackGUI.ViewModels
                         if (package != null)
                         {
                             Point packageOrigin = new Point(floorOrigin.X + area.Area.X, floorOrigin.Y + area.Area.Y);
-                            deck.AddPackage(packageOrigin, floor.LevelHeight,package.Length, package.Width, package.Height);
+                            deck.AddPackage(packageOrigin.X, packageOrigin.Y + truckOffsetY, floor.LevelHeight,package.Length, package.Width, package.Height);
                         }
                     });
                     
                 });
 
                 decks.Add(deck);
+                truckOffsetY = truck.Width + 25;
 
             });
 
