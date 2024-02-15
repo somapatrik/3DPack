@@ -1,8 +1,5 @@
-﻿using _3DPack;
-using PackGUI.Models;
-using PackGUI.ViewModels;
+﻿using PackGUI.Models;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -18,34 +15,32 @@ namespace PackGUI
         public Plan(List<TruckDeckModel> decks)
         {
             InitializeComponent();
-            DataContext = this;
+            DataContext = this;        
+
+            // Light
+            Model3DGroup LightGroup = new Model3DGroup();
+            AmbientLight myPointLight = new AmbientLight();
+            myPointLight.Color = Colors.White;
+            LightGroup.Children.Add(myPointLight);
+
+            // Add light
+            myViewport.Children.Add(new ModelVisual3D() { Content = LightGroup });
+
+            // Add objects
+            decks.ForEach(deck =>
+            {
+                myViewport.Children.Add(deck.ModelContent);
+            });
+
 
             camera = new PerspectiveCamera();
-            camera.Position = new Point3D(240, 200, 1600);
-            camera.LookDirection = new Vector3D(0, -.5, -1);
+            camera.Position = new Point3D(500, 1000, 650);
+            camera.LookDirection =  new Vector3D(0, -.5, -1);
             camera.UpDirection = new Vector3D(0, 1, 0);
             camera.FieldOfView = 60;
 
             myViewport.Camera = camera;
-            Model3DGroup group = new Model3DGroup();
 
-            AmbientLight myPointLight = new AmbientLight();
-            myPointLight.Color = Colors.White;
-            //myPointLight.Position = new Point3D(0, 10, 0);
-            
-
-            group.Children.Add(myPointLight);
-            ModelVisual3D visual = new ModelVisual3D();
-            visual.Content = group;
-            myViewport.Children.Add(visual);
-
-           // decks.Select(d=>d.VisualModel).ToList().ForEach(myViewport.Children.Add);
-
-            decks.ForEach(deck =>
-            {
-                myViewport.Children.Add(deck.VisualModel);
-                deck.PackageModels.ForEach(myViewport.Children.Add);
-            });
         }
 
         private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
