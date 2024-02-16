@@ -11,18 +11,44 @@ namespace PackGUI.Models
         // Conatins all models
         public Model3DGroup ModelGroup { get; set; }
 
-        // Center point
-        public Vector3D LookAtPoint 
+        public Point3D CameraDefaultPosition
         {
             get
             {
-                return new Vector3D
-                  (
-                    ModelGroup.Bounds.SizeX / 2 + ModelGroup.Bounds.X,
-                    ModelGroup.Bounds.SizeY / 2 + ModelGroup.Bounds.Y,
-                    ModelGroup.Bounds.SizeZ / 2 + ModelGroup.Bounds.Z
-                );
-                
+                double initialHeight = ModelGroup.Bounds.Y + (ModelGroup.Bounds.SizeY / 2);
+                double desiredHeight = initialHeight + 1500 * Math.Tan(40*(Math.PI / 180));
+
+                return new Point3D()
+                {
+                    X = ModelGroup.Bounds.X - 1500,
+                    Y = desiredHeight,
+                    Z = ModelGroup.Bounds.Z + (ModelGroup.Bounds.SizeZ / 2)
+                };
+            }
+        }
+
+        public Vector3D CameraDefaultLookAt
+        {
+            get 
+            {
+                return new Vector3D(
+            ModelGroup.Bounds.X + ModelGroup.Bounds.SizeX / 2 - CameraDefaultPosition.X,
+            ModelGroup.Bounds.Y + ModelGroup.Bounds.SizeY / 2 - CameraDefaultPosition.Y,
+            ModelGroup.Bounds.Z + ModelGroup.Bounds.SizeZ / 2 - CameraDefaultPosition.Z
+        );
+            }
+        }
+
+        public Point3D CenterPoint
+        {
+            get
+            {
+                return new Point3D()
+                {
+                    X = ModelGroup.Bounds.X + (ModelGroup.Bounds.SizeX / 2),
+                    Y = ModelGroup.Bounds.Y + (ModelGroup.Bounds.SizeY / 2),
+                    Z = ModelGroup.Bounds.Z + (ModelGroup.Bounds.SizeZ / 2)
+                };
             }
         }
 

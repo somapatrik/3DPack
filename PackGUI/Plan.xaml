@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PackGUI"
         mc:Ignorable="d"
-        Title="Plan" Height="450" Width="800" PreviewKeyDown="Grid_KeyDown">
+        Title="Plan" Height="450" Width="800" PreviewKeyDown="Grid_KeyDown" MouseWheel="Window_MouseWheel" MouseLeftButtonDown="Window_MouseLeftButtonDown">
 
 
-    <Grid Background="LightBlue">
+    <Grid Background="SkyBlue">
         <Viewport3D x:Name="myViewport">
  
         </Viewport3D>

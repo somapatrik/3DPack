@@ -57,8 +57,8 @@ namespace PackGUI.ViewModels
             Remove = new RelayCommand(RemoveExecute);
             SelectResult = new RelayCommand(SelectResultHandler);
 
-           // InsertAllExecute(null);
-           // RunExecute(null);
+            InsertAllExecute(null);
+            RunExecute(null);
         }
 
         private void SelectResultHandler(object obj)
