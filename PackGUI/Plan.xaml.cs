@@ -36,8 +36,6 @@ namespace PackGUI
                 myViewport.Children.Add(deck.ModelContent);
             });
 
-
-
             camera = new PerspectiveCamera();
             camera.Position = _truckDeckModels[0].CameraDefaultPosition; //new Point3D(500, 1000, 650);
             camera.LookDirection = _truckDeckModels[0].CameraDefaultLookAt;//new Vector3D(1, 0, 0);

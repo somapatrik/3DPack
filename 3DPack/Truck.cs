@@ -1,5 +1,8 @@
 ﻿using System.Drawing;
+
+#if USE2DCUT
 using optimal2dx;
+#endif
 
 namespace _3DPack
 {
@@ -21,7 +24,10 @@ namespace _3DPack
         }
 
         private TaskCompletionSource<bool> _finishedOpt;
+
+#if USE2DCUT
         private Optimization2DX _optimization2DX;
+#endif
 
         public static Truck Create(string name, int length, int width, int height)
         {
@@ -32,6 +38,7 @@ namespace _3DPack
 
         public Truck(int length, int width, int height)
         {
+#if USE2DCUT
             Name = "";
             Width = width;
             Height = height;
@@ -51,10 +58,12 @@ namespace _3DPack
             _optimization2DX.BladeWidth = 0;
             _optimization2DX.RandomSeed = 1;
             _optimization2DX.OptimizationLevel = 50;
+#endif
         }
 
         private void Optimization2DX_OnFinish()
         {
+#if USE2DCUT
             int SheetIndex = 0;
 
             int top_x, top_y, bottom_x, bottom_y, thick;
@@ -72,10 +81,12 @@ namespace _3DPack
             }
 
             _finishedOpt.SetResult(true);
+#endif
         }
 
         public async void AreaOptimization(List<Package> toPack, int floorId = 0)
         {
+#if USE2DCUT
             Unpacked = toPack.Select(p => p.Clone()).ToList();
 
             var floor = Floors.FirstOrDefault(f => f.Id == floorId);
@@ -108,6 +119,7 @@ namespace _3DPack
 
                 FinishFloor(ref floor);
            }
+#endif
         }
 
         private void StoreOptimizidedPackage(int packageCutId, int floorId, int topX, int topY, int bottomX, int bottomY)

@@ -8,13 +8,23 @@
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <USE2DCUT>true</USE2DCUT>
+	  <DefineConstants>$(DefineConstants);USE2DCUT</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <USE2DCUT>true</USE2DCUT>
+	  <DefineConstants>$(DefineConstants);USE2DCUT</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="optimal2dx\**" />
     <EmbeddedResource Remove="optimal2dx\**" />
     <None Remove="optimal2dx\**" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="$(USE2DCUT)">
     <COMReference Include="optimal2dx">
       <VersionMinor>0</VersionMinor>
       <VersionMajor>1</VersionMajor>
