@@ -24,7 +24,7 @@
     <None Remove="optimal2dx\**" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(USE2DCUT)">
+  <ItemGroup>
     <COMReference Include="optimal2dx">
       <VersionMinor>0</VersionMinor>
       <VersionMajor>1</VersionMajor>
