@@ -1,0 +1,168 @@
+Automation Components must be registered by using the command:
+
+regsvr32.exe optimal2dx.dll
+
+A message should appear telling you that the registration has succeeded.
+
+//---------------------------------------------------------------------------------------------------------------
+
+Note for Windows Win 64bit users: There are 2 regsvr32 applications. One of them is located in System32 folder and the other one is located in Syswow64. Try with the one located in SysWow64 folder.
+
+//---------------------------------------------------------------------------------------------------------------
+
+Note for Windows Vista / 7 users: On some builds of Windows Vista the registration fails. Sometimes the message "The module <<optimal2dx.dll>> was loaded but the the call to DllRegisterServer failed with error code 0x8002801c" is displayed. The reason for this message is that some parts of the registry cannot be accessed. 
+
+In some other cases the successful registration message is displayed ... but no registration is actually performed.
+
+To fix these problems you must run the regsvr32 application as an Administrator. You MUST do that even if you are already logged in as Administrator. To do that please follow the steps:
+
+- create a desktop shortcut to application cmd.exe (found in the System32 directory). 
+- right-click the shortcut and choose Run As Administrator.
+- change the path to the location where the optimal2dx.dll is placed.
+- write regsvr32 optimal2dx.dll
+
+If you are not able to Run the Cmd As Administrator you may also create a .bat file containing the command "regsvr32 optimal2dx.dll" and then run that file As Administrator.
+
+
+//---------------------------------------------------------------------------------------------------------------
+
+Borland C++Builder 6 installation
+
+For using the components within C++Builder environment you must install them first.
+
+Choose:
+
+Project | Import Type Library
+
+
+From the list box "Import Type Library" choose "optimal2dx" library.
+You may select the "Palette Page" where this component will be installed. By default is "ActiveX" page.
+Press the "Install" button.
+
+
+Note:
+There are some errors within C++Builder 6 environment which are not corrected by Borland.
+Because of that you cannot use the public properties of this object.
+You may use instead the methods behind the properties.
+See the examples and the help file.
+//---------------------------------------------------------------------------------------------------------------
+
+Borland Delphi 7 installation
+
+For using the component within Delphi environment you must install them first.
+
+Choose:
+
+Project | Import Type Library
+
+From the list box "Import Type Library" choose "optimal2dx" library.
+You may select the "Palette Page" where this component will be installed. By default is "ActiveX" page.
+Press the "Install" button.
+
+//---------------------------------------------------------------------------------------------------------------
+
+Code Gear Delphi 2007 installation
+
+For using the component within Delphi environment you must install them first.
+
+Choose:
+
+Component | Import Component
+
+then
+
+Import a Type Library
+
+
+From the list box "Registered Type Libraries" choose "optimal2dx" library.
+
+You may select the "Palette Page" where this component will be installed. Use a standard page such as "Additional" since not all pages are displayed in some versions of Delphi.
+
+Next. Finish.
+
+Wait: the component is NOT installed yet in the Component Palette. A unit called optimal2dx_TLB was created ... please remmeber its path.
+
+Create a new package from File | New | Others | Package. The package contents will appear in the right part of the screen.
+
+Right click the name of the project (which has bpl extension) and choose Add... and in the "Unit file name" browse to the location of optimal2dx_TLB.pas (which was previously created). Press OK.
+
+Right click the name of the project (which has bpl extension) and choose Install. A message should confirm the installation.
+
+//---------------------------------------------------------------------------------------------------------------
+
+Visual Basic 6 installation
+
+For using this component within VB environment you must install it first.
+
+Choose:
+
+Project | References
+
+Find and check the "optimal2dx" library.
+
+//---------------------------------------------------------------------------------------------------------------
+Visual Studio installation
+
+Make sure that project target is set to x86 and NOT to AnyCPU. This error can happen when you upgrade the project created with older versions of Visual Studio.
+
+It is recommanded to remove the existing reference to the library and add a new one. See below for more details.
+
+//---------------------------------------------------------------------------------------------------------------
+Visual Basic 2005 .NET installation
+
+For using this component within VB environment you must install it first.
+
+Choose:
+
+Project | Add References | COM
+
+Find and check the "optimal2dx" library.
+
+//---------------------------------------------------------------------------------------------------------------
+
+Visual C++ 2005 .NET installation
+
+For using this component within VC++ environment you must install it first.
+
+Choose:
+
+Project | Properties | References | Add New reference
+
+Find and check the "optimal2dx" library.
+
+//---------------------------------------------------------------------------------------------------------------
+
+Visual C# 2005 .NET instalation
+
+For using this component within VC# environment you must install it first.
+
+Choose:
+
+Project | Add Reference | COM
+
+Find and select the "optimal2dx" library.
+Press the "OK" button.
+
+//---------------------------------------------------------------------------------------------------------------
+
+Visual J# 2005 .NET instalation
+
+For using this component within VJ# environment you must install it first.
+
+Choose:
+
+Project | Add Reference | COM
+
+Find and select the "optimal2dx" library.
+Press the "OK" button.
+
+//---------------------------------------------------------------------------------------------------------------
+Excel 2003 installation
+
+In the Visual Basic Editor press menu Tools | References.
+Check the optimal1dx Library.
+//---------------------------------------------------------------------------------------------------------------
+Java
+
+You need Jacob package for making native code calls from java code
+//---------------------------------------------------------------------------------------------------------------

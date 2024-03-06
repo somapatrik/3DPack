@@ -1,0 +1,121 @@
+////////////////////////////////////////////////////////////////////
+LICENSE AGREEMENT - PLEASE READ CAREFULLY !
+
+
+This license statement and limited warranty constitutes a legal agreement ("License Agreement") between you (either as an individual or a single entity) and OPTIMAL PROGRAMS SRL for the Component product ("Component"), including any Software, media, and accompanying on-line or printed documentation.
+
+
+Cut 2D X / Optimization 2D X (hereafter referred to as "Component"), all related materials and associated intellectual property
+rights are owned by Optimal Programs S.R.L. The Component is protected by copyright laws and international copyright treaties.
+
+
+BY INSTALLING, COPYING, OR OTHERWISE USING THE Component, YOU AGREE TO BE BOUND BY ALL OF THE TERMS AND CONDITIONS OF THIS LICENSE AGREEMENT.
+ 
+ 
+1. WHAT YOU (AS CUSTOMER) MAY DO WITH THE COMPONENT:
+
+a). you may develop one application using the component. Your application must provides substantially more functionality than the Component itself.
+
+b). you may distribute your application (per user basis) to your users. Each user must purchase licenses from Optimal Programs SRL for each computer where the component is used.
+
+
+
+2. WHAT YOU MAY NOT DO WITH THE COMPONENT:
+
+a). you may NOT: copy (except as specifically authorized above), modify, adapt, disassemble, decompile, reverse engineer, assign, disclose privately obtained information about the Component.
+
+b). you may NOT sell, lease, rent the Component outside your application.
+
+c). you may NOT use the component in a server or web application.
+
+
+
+3. WHAT YOU (AS CUSTOMER) MUST DO:
+
+a). you must explicitely write in the About Box of your application that the Optimization Engine is provided by OPTIMAL PROGRAMS srl.
+
+
+ 
+4. OTHER RESTRICTIONS
+
+a). The software is offered "AS IS", with no other responsabilities or warranties. The customer MUST test ALL features of the software before purchase. Optimal Programs DOES NOT accept complains of bugs or missing features after purchase.
+
+b). The Component is licensed, not sold, all rights not expressly granted in this License Agreement are retained by OPTIMAL PROGRAMS SRL. OPTIMAL PROGRAMS SRL retains title, ownership, and intellectual property rights of the Component.
+
+c). Future versions are not included.
+
+d). The source code for the component is not provided.
+
+e). You may move the license to another computer only after 2 years since the previous move.
+
+
+
+5. WARRANTY
+
+OPTIMAL PROGRAMS SRL: 
+
+a). DOES NOT warrant that the software will work on any computer with any configuration. It will be the user responsability to test the software on a particular computer. If the software will not work on that computer OPTIMAL PROGRAMS SRL is not responsible to fix the errors (problems) of that computer.
+
+b). DOES NOT warrant that the software will work on any existing or future Operating System. It will be the user responsability to test the software on a particular Operating System. If the software will not work on that Operating System OPTIMAL PROGRAMS SRL is not responsible to fix the errors (problems) of that Operating System. 
+
+c). In the case of computer changes (new computer or new components), the OPTIMAL PROGRAMS SRL is not responsible for incompatibility issues. If the software will not work on the new computer, the OPTIMAL PROGRAMS SRL will NOT return the license fee to the customer.
+
+d). Not optimal layouts are not considered bugs (errors in the program) due to the nature of the problem.
+
+
+OPTIMAL PROGRAMS SRL warrants that:
+
+e). will make all  reasonable efforts to solve any problem issues with the Component. For solving the errors, the Client must
+send the data  generating the error by email to contact@optimalprograms.com.
+
+f). registered users will be provided by all necessary support by email only.
+
+
+
+6. PAYMENT
+
+You have to pay license fee to OPTIMAL PROGRAMS SRL.
+
+Updates of the component are provided at a special price.
+
+Custom features added to the component will be discussed separately.
+
+You agree that you have had the possibility to test a full-featured version of the Component for a period of
+time of 30 days.
+
+There is no money-back option after the payment confirmation.
+
+
+
+7. PROTECTION
+
+The Component will contain a unique security code whose purpose is to indentify it.
+
+
+ 
+8. SPECIALS
+
+OPTIMAL PROGRAMS SRL reserves the right to terminate the contract if the customer behaves in such way that endanger the financial stability of the company. 
+
+OPTIMAL PROGRAMS SRL reserves the right to terminate the contract if the language utilized by the customer is not friendly.
+
+
+OPTIMAL PROGRAMS SRL reserves the right to terminate the contract if the customer behaves in such way that endanger the stability (in any way) of the company. 
+
+NO money are sent back to the customer in this case.
+
+EXCEPT AS SET FORTH IN THIS ARTICLE, OPTIMAL PROGRAMS SRL MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. AUTHOR WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OF ANY KIND, INCLUDING BUT NOT LIMITED TO DAMAGES RELATED TO LOST DATA OR LOST PROFITS. 
+
+
+9. MISCELLANEOUS
+
+If any provision of this License Agreement is held to be unenforceable for any reason, such provision shall be reformed only to the extent necessary to make it enforceable. The validity of other provisions shall not be affected. 
+
+This License Agreement constitutes the entire agreement between the parties with respect to the subject matter hereof and supersedes any prior verbal understandings or agreements between them. It may be amended only by a writing executed by both parties. 
+ 
+If you have any question concerning this License Agreement, Component, or registration details, please contact us: 
+
+contact@optimalprograms.com
+
+www.optimalprograms.com
+
