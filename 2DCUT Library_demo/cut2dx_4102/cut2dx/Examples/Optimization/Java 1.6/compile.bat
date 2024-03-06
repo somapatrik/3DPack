@@ -1,0 +1,1 @@
+javac -cp jacob.jar; CutTest.java

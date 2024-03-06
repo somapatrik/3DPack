@@ -1,0 +1,70 @@
+// cut2dx.odl : type library source for cut2dx.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (cut2dx.tlb).
+
+[ uuid(3C05B7E1-01FA-4F48-A168-CA41824485B0), version(1.0) ]
+library Cut2dx
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+	//  Primary dispatch interface for CCut2dxDoc
+	
+	[ uuid(4888E327-D690-46AB-9596-86914851F032) ]
+	dispinterface ICut2dx
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CCut2dxDlgAutoProxy)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CCut2dxDlgAutoProxy)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CCut2dxDoc
+	
+	[ uuid(783D1866-E302-4F76-A631-8834BEB39F26) ]
+	coclass Cut2dx
+	{
+		[default] dispinterface ICut2dx;
+	};
+
+
+	//  Primary dispatch interface for CMFCSink
+	
+	[ uuid(6EC3F7C6-401A-433A-A9C4-77CAE9AA05C7) ]
+	dispinterface IMFCSink
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CMFCSink)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CMFCSink)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CMFCSink
+
+	[ uuid(C48A62DE-946B-4D95-82E1-480A9029A1E9) ]
+	coclass MFCSink
+	{
+		[default] dispinterface IMFCSink;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

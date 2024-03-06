@@ -1,0 +1,23 @@
+The component has been tested for:
+
+
+Win 98
+Win XP Profesional Edition 32
+Windows Vista Bussiness Edition 32
+Windows 7
+Windows 8
+Windows 10
+
+using the environments and compilers:
+
+
+C++Builder 6
+Delphi 7
+Visual Basic 6
+Visual Basic 2005
+Visual C++ 2005
+Visual C# 2005
+Visual J# 2005
+Visual C++ 6.0 MFC
+Excel 2003
+Java 1.6
