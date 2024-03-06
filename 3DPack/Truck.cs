@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 
 #if USE2DCUT
-using optimal2dx;
+using optimal2dx_Lib;
 #endif
 
 namespace _3DPack
@@ -26,7 +26,7 @@ namespace _3DPack
         private TaskCompletionSource<bool> _finishedOpt;
 
 #if USE2DCUT
-        private Optimization2DX _optimization2DX;
+        private Cut2DX _optimization2DX;
 #endif
 
         public static Truck Create(string name, int length, int width, int height)
@@ -52,7 +52,8 @@ namespace _3DPack
             Packed = new List<Package>();
             Unpacked = new List<Package>();
 
-            _optimization2DX = new Optimization2DX();
+            _optimization2DX = new Cut2DX();
+            _optimization2DX.Identification = 2023020910;
             _optimization2DX.OnFinish += Optimization2DX_OnFinish;
 
             _optimization2DX.BladeWidth = 0;

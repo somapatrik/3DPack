@@ -25,12 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <COMReference Include="optimal2dx">
+    <COMReference Include="optimal2dx_Lib">
+      <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>0</VersionMinor>
       <VersionMajor>1</VersionMajor>
-      <Guid>e1aec0a5-8a7c-47bc-b2be-992ceb0c9b0d</Guid>
+      <Guid>8be638ef-4dcd-444a-a658-a9d876e038ca</Guid>
       <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
